@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/owen28299/articles-products-and-express#readme",
   "dependencies": {
+    "consolidate": "^0.14.0",
     "express": "^4.13.4",
     "jade": "^1.11.0"
   }
