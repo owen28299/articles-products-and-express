@@ -3,7 +3,9 @@ const express    = require('express'),
       app        = express(),
       bodyParser = require('body-parser'),
       articlesRoute = require('./routes/articles'),
-      productsRoute = require('./routes/products');
+      productsRoute = require('./routes/products'),
+      analytics = require('./middleware/analytics')
+      ;
 
 app.set('view engine', 'jade');
 app.set('views', 'public');
@@ -13,9 +15,11 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.use(express.static('public'));
-app.use('/articles', articlesRoute);
-app.use('/products', productsRoute);
+app.use(analytics)
+  .use(express.static('public'))
+  .use('/articles', articlesRoute)
+  .use('/products', productsRoute)
+  ;
 
 const server = app.listen(3000, () => {
   let host = server.address().address,

@@ -2,14 +2,15 @@ doctype html
 
 block title
   title
-    |Edit
+    |New Product
 
 block content
 
-    p Name
-    input
-    p Price
-    input
-    p Inventory
-    input
-    button Submit
+    form(action='/products' method='POST')
+      p Name
+      input(name='name')
+      p Price
+      input(name='price')
+      p Inventory
+      input(name='inventory')
+      button Submit
