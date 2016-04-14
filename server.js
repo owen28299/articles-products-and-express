@@ -1,11 +1,13 @@
 'use strict';
-const express    = require('express'),
-      app        = express(),
-      bodyParser = require('body-parser'),
-      articlesRoute = require('./routes/articles'),
-      productsRoute = require('./routes/products'),
-      analytics = require('./middleware/analytics')
-      ;
+const express        = require('express'),
+      app            = express(),
+      bodyParser     = require('body-parser'),
+      articlesRoute  = require('./routes/articles'),
+      productsRoute  = require('./routes/products'),
+      analytics      = require('./middleware/analytics'),
+      methodOverride = require('method-override');
+
+app.use(methodOverride('_method'));
 
 app.set('view engine', 'jade');
 app.set('views', 'public');

@@ -1,7 +1,10 @@
 'use strict';
-const express = require('express'),
-      router = express.Router(),
-      productDB = require('../db/products');
+const express        = require('express'),
+      router         = express.Router(),
+      productDB      = require('../db/products'),
+      methodOverride = require('method-override');
+
+router.use(methodOverride('_method'));
 
 
 router.route('/')
@@ -81,6 +84,5 @@ router.route('/:id')
     res.json({success: true});
 
   });
-
 
 module.exports = router;
