@@ -4,6 +4,7 @@ const express        = require('express'),
       bodyParser     = require('body-parser'),
       articlesRoute  = require('./routes/articles'),
       productsRoute  = require('./routes/products'),
+      analytics      = require('./middleware/analytics'),
       methodOverride = require('method-override');
 
 app.use(methodOverride('_method'));
@@ -16,9 +17,11 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.use(express.static('public'));
-app.use('/articles', articlesRoute);
-app.use('/products', productsRoute);
+app.use(analytics)
+  .use(express.static('public'))
+  .use('/articles', articlesRoute)
+  .use('/products', productsRoute)
+  ;
 
 const server = app.listen(3000, () => {
   let host = server.address().address,
