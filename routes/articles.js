@@ -5,7 +5,9 @@ const express = require('express'),
 
 router.route('/')
   .get ((req, res) => {
-    res.render();
+    res.render('./articles/index', {
+      articles: articleDB,
+    });
   })
   .post( (req,res) => {
     let newArticle = ({
@@ -21,6 +23,19 @@ router.route('/')
     else {
       res.json({ success: false });
     }
+  });
+
+router.route('/:title/edit')
+  .get( (req,res) => {
+    let title = req.params.title;
+    res.render('./articles/edit', {
+      article: articleDB[title],
+    });
+  });
+
+router.route('/new')
+  .get( (req,res) => {
+    res.render('./articles/new');
   });
 
 router.route('/:title')
