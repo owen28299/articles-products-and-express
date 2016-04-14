@@ -1,9 +1,11 @@
 'use strict';
 const express = require('express'),
       router = express.Router(),
-      productDB = require('../db/products');
+      productDB = require('../db/products'),
+      analytics = require('../middleware/analytics');
 
-router.route('/')
+router.use(analytics)
+  .route('/')
   .get ((req, res) => {
     res.render('index', {
       products: productDB.products
@@ -25,7 +27,6 @@ router.route('/')
 
     productDB.products.push(newProduct);
     res.redirect('/products/new');
-    // res.json({ success: true });
   });
 
 router.route('/:id/edit')
