@@ -1,12 +1,15 @@
 'use strict';
-const express = require('express'),
-      router = express.Router(),
-      productDB = require('../db/products');
+const express        = require('express'),
+      router         = express.Router(),
+      productDB      = require('../db/products'),
+      methodOverride = require('method-override');
+
+router.use(methodOverride('_method'));
 
 router.route('/')
-  .get ((req, res) => {
+  .get((req, res) => {
     res.render('index', {
-      products: productDB.products,
+      products: productDB.products
     });
   })
   .post((req, res) => {
@@ -24,7 +27,7 @@ router.route('/')
     });
 
     productDB.products.push(newProduct);
-    res.json({ success: true });
+    res.redirect('/products/new');
   });
 
 router.route('/:id/edit')
@@ -58,7 +61,7 @@ router.route('/:id')
             return res.send('Invalid Request: Field Cannot Be Changed');
           }
         }
-        res.send(productDB);
+        res.redirect('/products');
     }
   })
   .delete((req,res) => {
@@ -80,6 +83,5 @@ router.route('/:id')
     res.json({success: true});
 
   });
-
 
 module.exports = router;
