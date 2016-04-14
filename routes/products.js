@@ -1,12 +1,11 @@
 'use strict';
 const express = require('express'),
       router = express.Router(),
-      productDB = require('../db/products'),
-      analytics = require('../middleware/analytics');
+      productDB = require('../db/products');
 
-router.use(analytics)
-  .route('/')
-  .get ((req, res) => {
+
+router.route('/')
+  .get((req, res) => {
     res.render('index', {
       products: productDB.products
     });
@@ -44,7 +43,6 @@ router.route('/new')
 
 router.route('/:id')
   .put((req, res) => {
-    console.log(req.body);
     let id = req.params.id;
     if (productDB.products.length === 0) {
       return res.status(400).send('Bad Request: There are no products');
