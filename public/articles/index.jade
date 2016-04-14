@@ -1,0 +1,16 @@
+doctype html
+
+block title
+  title
+    |Articles
+
+block content
+
+  if(articles)
+    mixin createArticle(article)
+      h1= article.title
+      h2= article.body
+      h2= article.author
+
+    each article in articles
+      +createArticle(article)
