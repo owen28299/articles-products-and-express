@@ -7,12 +7,10 @@ block title
 block content
 
   if(product)
-    p= product.name
-    input
-
-    p= product.price
-    input
-
-    p= product.inventory
-    input
-    button Submit
+      p= product.name
+      input(name='name')
+      p= product.price
+      input(name='price')
+      p= product.inventory
+      input(name='inventory')
+      button Submit

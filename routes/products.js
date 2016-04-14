@@ -6,7 +6,7 @@ const express = require('express'),
 router.route('/')
   .get ((req, res) => {
     res.render('index', {
-      products: productDB.products,
+      products: productDB.products
     });
   })
   .post((req, res) => {
@@ -24,7 +24,8 @@ router.route('/')
     });
 
     productDB.products.push(newProduct);
-    res.json({ success: true });
+    res.redirect('/products/new');
+    // res.json({ success: true });
   });
 
 router.route('/:id/edit')
@@ -42,6 +43,7 @@ router.route('/new')
 
 router.route('/:id')
   .put((req, res) => {
+    console.log(req.body);
     let id = req.params.id;
     if (productDB.products.length === 0) {
       return res.status(400).send('Bad Request: There are no products');
@@ -58,7 +60,7 @@ router.route('/:id')
             return res.send('Invalid Request: Field Cannot Be Changed');
           }
         }
-        res.send(productDB);
+        res.redirect('/products');
     }
   })
   .delete((req,res) => {
