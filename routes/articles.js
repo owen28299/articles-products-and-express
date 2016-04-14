@@ -1,7 +1,9 @@
 'use strict';
 const express = require('express'),
       router = express.Router(),
-      articleDB = require('../db/articles');
+      articleDB = require('../db/articles'),
+      validation = require('../middleware/validation')
+      ;
 
 router.route('/')
   .get ((req, res) => {
@@ -9,7 +11,7 @@ router.route('/')
       articles: articleDB,
     });
   })
-  .post( (req,res) => {
+  .post(validation({ "title": "string", "body": "string", "author": "string"}), (req,res) => {
     let newArticle = ({
       'title': req.body.title,
       'body': req.body.body,
@@ -18,7 +20,7 @@ router.route('/')
     });
     if(!articleDB.hasOwnProperty(req.body.title)){
       articleDB[req.body.title] = newArticle;
-      res.json({ success: true });
+      res.redirect('/articles/new');
     }
     else {
       res.json({ success: false });
@@ -39,7 +41,7 @@ router.route('/new')
   });
 
 router.route('/:title')
-  .put((req, res) => {
+  .put(validation({ "title": "string", "body": "string", "author": "string"}, true), (req, res) => {
     let title = req.params.title;
     var changes = req.body;
 
