@@ -2,7 +2,9 @@
 const express        = require('express'),
       router         = express.Router(),
       productDB      = require('../db/products'),
-      methodOverride = require('method-override');
+      methodOverride = require('method-override'),
+      validation     = require('../middleware/validation')
+      ;
 
 router.use(methodOverride('_method'));
 
@@ -13,7 +15,8 @@ router.route('/')
       products: productDB.products
     });
   })
-  .post((req, res) => {
+  .post(validation({ "name": "string", "price": "number", "inventory": "number"}),
+    (req, res) => {
     let newProduct = ({
       'name': req.body.name,
       'price': req.body.price,
@@ -45,7 +48,7 @@ router.route('/new')
   });
 
 router.route('/:id')
-  .put((req, res) => {
+  .put(validation({ "name": "string", "price": "number", "inventory": "number" }, true), (req, res) => {
     let id = req.params.id;
     if (productDB.products.length === 0) {
       return res.status(400).send('Bad Request: There are no products');
@@ -54,7 +57,7 @@ router.route('/:id')
       let product = productDB.products[id];
         for (let prop in req.body) {
           try {
-            if (product.hasOwnProperty(prop)){
+            if (product.hasOwnProperty(prop) && req.body[prop]){
               product[prop] = req.body[prop];
             }
           }
