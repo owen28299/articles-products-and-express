@@ -7,12 +7,13 @@ block title
 block content
 
   if(article)
-    p= article.title
-    input
+    form(method="POST" action="/articles/#{article.id}?_method=PUT")
+    p= 'title'
+    input( name= 'title' value= article.title placeholder= 'title')
 
-    p= article.body
-    input
+    p= 'body'
+    input( name= 'body' value= article.body placeholder= 'body')
 
-    p= article.author
-    input
+    p= 'author'
+    input( name= 'author' value= article.author placeholder= 'author')
     button Submit

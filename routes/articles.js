@@ -18,7 +18,8 @@ router.route('/')
     });
     if(!articleDB.hasOwnProperty(req.body.title)){
       articleDB[req.body.title] = newArticle;
-      res.json({ success: true });
+      res.redirect('/products/new');
+
     }
     else {
       res.json({ success: false });

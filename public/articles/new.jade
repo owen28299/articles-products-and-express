@@ -6,10 +6,11 @@ block title
 
 block content
 
-    p Title
-    input
-    p Body
-    input
-    p Author
-    input
-    button Submit
+    form(action='/articles' method='POST')
+      p Title
+      input(name='name')
+      p Body
+      input(name='price')
+      p Author
+      input(name='inventory')
+      button Submit
