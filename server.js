@@ -1,10 +1,12 @@
 'use strict';
 const express    = require('express'),
       app        = express(),
-      router     =  express.Router(),
       bodyParser = require('body-parser'),
       articlesRoute = require('./routes/articles'),
       productsRoute = require('./routes/products');
+
+app.set('view engine', 'jade');
+app.set('views', 'public');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
