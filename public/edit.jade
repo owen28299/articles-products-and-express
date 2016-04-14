@@ -1,0 +1,18 @@
+doctype html
+
+block title
+  title
+    |Edit
+
+block content
+
+  if(product)
+    p= product.name
+    input(placeholder=product.name)
+
+    p= product.price
+    input(placeholder=product.price)
+
+    p= product.inventory
+    input(placeholder=product.inventory)
+    button Submit
