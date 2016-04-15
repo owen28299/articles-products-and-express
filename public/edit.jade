@@ -10,9 +10,13 @@ block content
     form(method="POST" action="/products/#{product.id}?_method=PUT")
       p= 'Name'
       input( name= 'name' value= product.name placeholder= 'name')
+
       p= 'Price'
       input(name='price' value= product.price placeholder= 'price')
+
       p= 'Inventory'
       input(name='inventory' value= product.inventory placeholder= 'inventory')
       button Submit
 
+    form(method="POST" action="/products/#{product.id}?_method=DELETE")
+      button Delete This

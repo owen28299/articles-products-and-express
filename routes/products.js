@@ -83,8 +83,7 @@ router.route('/:id')
         }
       }
     }
-
-    res.json({success: true});
+    res.redirect('/products');
 
   });
 

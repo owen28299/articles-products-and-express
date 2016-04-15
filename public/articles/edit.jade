@@ -7,13 +7,16 @@ block title
 block content
 
   if(article)
-    form(method="POST" action="/articles/#{article.id}?_method=PUT")
-    p= 'title'
-    input( name= 'title' value= article.title placeholder= 'title')
+    form(method="POST" action="/articles/#{article.title}?_method=PUT")
+        p= 'title'
+        input( name= 'title' value= article.title placeholder= 'title')
 
-    p= 'body'
-    input( name= 'body' value= article.body placeholder= 'body')
+        p= 'body'
+        input( name= 'body' value= article.body placeholder= 'body')
 
-    p= 'author'
-    input( name= 'author' value= article.author placeholder= 'author')
-    button Submit
+        p= 'author'
+        input( name= 'author' value= article.author placeholder= 'author')
+        button Submit
+
+    form(method="POST" action="/products/#{product.id}?_method=DELETE")
+      button Delete This

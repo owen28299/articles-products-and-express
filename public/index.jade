@@ -15,3 +15,7 @@ block content
 
     each product in products
       +createProduct(product)
+      button
+        a(href= '/products/#{product.id}/edit') Edit
+      form(method="POST" action="/products/#{product.id}?_method=DELETE")
+        button Delete This
