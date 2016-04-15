@@ -1,13 +1,15 @@
 'use strict';
 const express = require('express'),
       router = express.Router(),
-      articleDB = require('../db/articles'),
-      validation = require('../middleware/validation');
+      database = require('../db/database.json'),
+      validation = require('../middleware/validation'),
+      fs = require('fs')
+      ;
 
 router.route('/')
   .get ((req, res) => {
     res.render('./articles/index', {
-      articles: articleDB,
+      articles: database.articles,
     });
   })
   .post(validation({ "title": "string", "body": "string", "author": "string"}), (req,res) => {
@@ -17,20 +19,24 @@ router.route('/')
       'author': req.body.author,
       'urlTitle': encodeURI(req.body.title)
     });
-    if(!articleDB.hasOwnProperty(req.body.title)){
-      articleDB[req.body.title] = newArticle;
-      res.redirect('/articles/new');
+    if(!database.articles.hasOwnProperty(req.body.title)){
+      database.articles[req.body.title] = newArticle;
+      fs.writeFile('./db/database.json', JSON.stringify(database), () => {
+        res.redirect('/articles');
+      });
     }
     else {
       res.json({ success: false });
     }
+
+
   });
 
 router.route('/:title/edit')
   .get( (req,res) => {
     let title = req.params.title;
     res.render('./articles/edit', {
-      article: articleDB[title],
+      article: database.articles[title],
     });
   });
 
@@ -45,18 +51,22 @@ router.route('/:title')
     var changes = req.body;
 
     for (var prop in changes){
-      if(articleDB[title].hasOwnProperty(prop) && prop !== 'title'){
-        articleDB[title][prop] = changes[prop];
+      if(database.articles[title].hasOwnProperty(prop) && prop !== 'title'){
+        database.articles[title][prop] = changes[prop];
       }
     }
-    res.redirect('/articles');
+    fs.writeFile('./db/database.json', JSON.stringify(database), () => {
+      res.redirect('/articles');
+    });
   })
   .delete((req,res) => {
     let title = req.params.title;
 
-    if(articleDB.hasOwnProperty(title)){
-      delete articleDB[title];
-      res.redirect('/articles');
+    if(database.articles.hasOwnProperty(title)){
+      delete database.articles[title];
+      fs.writeFile('./db/database.json', JSON.stringify(database), () => {
+        res.redirect('/articles');
+      });
     }
 
     else {
