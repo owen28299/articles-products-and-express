@@ -22,7 +22,7 @@ router.route('/')
     if(!database.articles.hasOwnProperty(req.body.title)){
       database.articles[req.body.title] = newArticle;
       fs.writeFile('./db/database.json', JSON.stringify(database), () => {
-        res.redirect('/');
+        res.redirect('/articles');
       });
     }
     else {
@@ -56,7 +56,7 @@ router.route('/:title')
       }
     }
     fs.writeFile('./db/database.json', JSON.stringify(database), () => {
-      res.redirect('/');
+      res.redirect('/articles');
     });
   })
   .delete((req,res) => {
@@ -65,7 +65,7 @@ router.route('/:title')
     if(database.articles.hasOwnProperty(title)){
       delete database.articles[title];
       fs.writeFile('./db/database.json', JSON.stringify(database), () => {
-        res.redirect('/');
+        res.redirect('/articles');
       });
     }
 

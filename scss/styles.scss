@@ -1,0 +1,11 @@
+@import 'partials/reset.scss';
+$color1: hsl(216,94%,25%);
+$color2: hsl(214,93%,34%);
+$color3: hsl(204,99%,56%);
+$color4: hsl(200,100%,78%);
+$color5: hsl(216,100%,95%);
+
+
+body {
+  background-color: $color5;
+}

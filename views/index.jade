@@ -1,24 +1,28 @@
 doctype html
 
-block title
-  title
-    |Products
+head
+  block title
+    title
+      |Products
+    style
+      include ../public/css/styles.css
 
-block content
-button
-    a(href= '/products/new' style= 'text-decoration: none') Create New Product
+body
+  block content
+    button
+        a(href= '/products/new' style= 'text-decoration: none') Create New Product
 
-  if(products)
-    mixin createProduct(product)
-      h1= product.name
-      h2= product.price
-      h2= product.inventory
-      h3= product.id
+      if(products)
+        mixin createProduct(product)
+          h1= product.name
+          h2= product.price
+          h2= product.inventory
+          h3= product.id
 
-    each product in products
-      if(product.name != null)
-        +createProduct(product)
-        button
-          a(href= '/products/#{product.id}/edit') Edit
-        form(method="POST" action="/products/#{product.id}?_method=DELETE")
-          button Delete This
+        each product in products
+          if(product.name != null)
+            +createProduct(product)
+            button
+              a(href= '/products/#{product.id}/edit') Edit
+            form(method="POST" action="/products/#{product.id}?_method=DELETE")
+              button Delete This

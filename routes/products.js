@@ -1,9 +1,9 @@
 'use strict';
 const express        = require('express'),
       router         = express.Router(),
-      database = require('../db/database.json'),
+      database       = require('../db/database.json'),
       validation     = require('../middleware/validation'),
-      fs = require('fs')
+      fs             = require('fs')
       ;
 
 router.route('/')
@@ -28,9 +28,8 @@ router.route('/')
     });
 
     database.products.products.push(newProduct);
-    fs.writeFile('./db/database.json', JSON.stringify(database), () => {
-      res.redirect('/');
-    });
+    fs.writeFile('./db/database.json', JSON.stringify(database));
+    res.redirect('/products');
   });
 
 router.route('/:id/edit')
@@ -65,7 +64,7 @@ router.route('/:id')
           }
         }
     fs.writeFile('./db/database.json', JSON.stringify(database), () => {
-      res.redirect('/');
+      res.redirect('/products');
     });
     }
   })
@@ -85,7 +84,7 @@ router.route('/:id')
       }
     }
     fs.writeFile('./db/database.json', JSON.stringify(database), () => {
-      res.redirect('/');
+      res.redirect('/products');
     });
 
   });

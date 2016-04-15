@@ -23,5 +23,10 @@
     "express": "^4.13.4",
     "jade": "^1.11.0",
     "method-override": "^2.3.5"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.12.3",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^2.2.0"
   }
 }
