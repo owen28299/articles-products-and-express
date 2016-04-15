@@ -5,6 +5,8 @@ block title
     |Products
 
 block content
+button
+    a(href= '/products/new' style= 'text-decoration: none') Create New Product
 
   if(products)
     mixin createProduct(product)
@@ -14,8 +16,9 @@ block content
       h3= product.id
 
     each product in products
-      +createProduct(product)
-      button
-        a(href= '/products/#{product.id}/edit') Edit
-      form(method="POST" action="/products/#{product.id}?_method=DELETE")
-        button Delete This
+      if(product.name !=null)
+        +createProduct(product)
+        button
+          a(href= '/products/#{product.id}/edit') Edit
+        form(method="POST" action="/products/#{product.id}?_method=DELETE")
+          button Delete This

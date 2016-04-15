@@ -6,6 +6,9 @@ block title
 
 block content
 
+  button
+    a(href= '/articles' style= 'text-decoration: none') Back
+
   if(article)
     form(method="POST" action="/articles/#{article.title}?_method=PUT")
         p= 'title'
@@ -16,7 +19,8 @@ block content
 
         p= 'author'
         input( name= 'author' value= article.author placeholder= 'author')
+        br
+        br
         button Submit
-
-    form(method="POST" action="/products/#{product.id}?_method=DELETE")
-      button Delete This
+        form(method="POST" action="/articles/#{article.title}?_method=DELETE")
+          button Delete This

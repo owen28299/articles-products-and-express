@@ -2,8 +2,11 @@
 const express = require('express'),
       router = express.Router(),
       articleDB = require('../db/articles'),
-      validation = require('../middleware/validation')
+      validation = require('../middleware/validation'),
+      methodOverride = require('method-override')
       ;
+
+router.use(methodOverride('_method'));
 
 router.route('/')
   .get ((req, res) => {
@@ -50,14 +53,15 @@ router.route('/:title')
         articleDB[title][prop] = changes[prop];
       }
     }
-    res.send(articleDB);
+      res.redirect('/articles');
+
   })
   .delete((req,res) => {
     let title = req.params.title;
 
     if(articleDB.hasOwnProperty(title)){
       delete articleDB[title];
-      res.send({success: true});
+      res.redirect('/articles');
     }
 
     else {

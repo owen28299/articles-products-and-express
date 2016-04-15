@@ -6,14 +6,17 @@ block title
 
 block content
 
-    form(action='/products' method='POST')
-      p Name
-      input(name='name')
-      p Price
-      input(name='price')
-      p Inventory
-      input(name='inventory')
-      button Submit
+  button
+    a(href= '/products' style= 'text-decoration: none') Back
+sa
+  form(action='/products' method='POST')
+    p Name
+    input(name='name')
+    p Price
+    input(name='price')
+    p Inventory
+    input(name='inventory')
+    button Submit
 
 
 
