@@ -1,11 +1,51 @@
 @import 'partials/reset.scss';
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+
 $color1: hsl(216,94%,25%);
 $color2: hsl(214,93%,34%);
 $color3: hsl(204,99%,56%);
 $color4: hsl(200,100%,78%);
 $color5: hsl(216,100%,95%);
+$background: hsla(216,100%,15%,0.5);
 
 
-body {
-  background-color: $color5;
+#middle {
+  background: $background;
+  height: 700px;
+  width: 700px;
+  margin: 100px;
+  display: flex;
+  justify-content: center;
+  border-radius: 20px;
+  flex-wrap: wrap;
+  text-align: center;
+
+  h1{
+    color: $color5;
+    font-size: 85px;
+    font-style: italic;
+    width: 100%;
+    margin-top: 20%;
+    font-weight: bold;
+  }
+
+  p{
+    font-size: 50px;
+    color: $color5;
+    margin: 30px;
+  }
+
+  a{
+    text-decoration: none;
+  }
 }
+
+html {
+  background: url(cityscape.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  font-family: 'Raleway', sans-serif;
+}
+
