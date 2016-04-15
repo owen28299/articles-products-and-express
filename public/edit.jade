@@ -6,6 +6,9 @@ block title
 
 block content
 
+button
+    a(href= '/products' style= 'text-decoration: none') Back
+
   if(product)
     form(method="POST" action="/products/#{product.id}?_method=PUT")
       p= 'Name'

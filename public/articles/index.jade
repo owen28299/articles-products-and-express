@@ -6,6 +6,9 @@ block title
 
 block content
 
+  button
+    a(href= '/articles/new' style= 'text-decoration: none') Add New Article
+
   if(articles)
     mixin createArticle(article)
       h1= article.title
@@ -14,3 +17,7 @@ block content
 
     each article in articles
       +createArticle(article)
+      button
+        a(href= '/articles/#{article.title}/edit' style= 'text-decoration: none') Edit
+      form(method="POST" action="/articles/#{article.title}?_method=DELETE")
+        button Delete This
