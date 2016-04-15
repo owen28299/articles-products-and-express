@@ -53,8 +53,7 @@ router.route('/:title')
         articleDB[title][prop] = changes[prop];
       }
     }
-      res.redirect('/articles');
-
+    res.redirect('/articles');
   })
   .delete((req,res) => {
     let title = req.params.title;

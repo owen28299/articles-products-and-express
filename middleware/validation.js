@@ -3,6 +3,7 @@ const fs = require('fs');
 
 let validation = (requirements, allowEmpty) => {
   return (req,res,next) => {
+
     let validObj = requirements;
     let inputObj = req.body;
 
@@ -11,7 +12,6 @@ let validation = (requirements, allowEmpty) => {
     if(Object.keys(validObj).length !== Object.keys(inputObj).length){
       valid = false;
     }
-
 
     for (let prop in inputObj){
       let inputType = 'string';
@@ -31,6 +31,7 @@ let validation = (requirements, allowEmpty) => {
         valid = false;
         break;
       }
+
     }
 
     if(valid){

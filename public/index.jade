@@ -16,7 +16,7 @@ button
       h3= product.id
 
     each product in products
-      if(product.name !=null)
+      if(product.name != null)
         +createProduct(product)
         button
           a(href= '/products/#{product.id}/edit') Edit
