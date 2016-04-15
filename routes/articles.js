@@ -2,11 +2,7 @@
 const express = require('express'),
       router = express.Router(),
       articleDB = require('../db/articles'),
-      validation = require('../middleware/validation'),
-      methodOverride = require('method-override')
-      ;
-
-router.use(methodOverride('_method'));
+      validation = require('../middleware/validation');
 
 router.route('/')
   .get ((req, res) => {
