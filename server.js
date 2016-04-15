@@ -10,7 +10,7 @@ const express        = require('express'),
 app.use(methodOverride('_method'));
 
 app.set('view engine', 'jade');
-app.set('views', 'public');
+app.set('views', 'views');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
