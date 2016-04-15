@@ -1,1 +1,1 @@
-{"articles":{},"products":{"products":[]}}
+{"articles":{"Article 1":{"title":"Article 1","body":"This is an article","author":"Ice Frog","urlTitle":"Article%201"}},"products":{"products":[{"name":null,"price":null,"inventory":null,"id":0},{"name":null,"price":null,"inventory":null,"id":1}]}}

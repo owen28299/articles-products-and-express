@@ -1,14 +1,15 @@
 'use strict';
 const express        = require('express'),
       router         = express.Router(),
-      productDB      = require('../db/products'),
-      validation     = require('../middleware/validation')
+      database = require('../db/database.json'),
+      validation     = require('../middleware/validation'),
+      fs = require('fs')
       ;
 
 router.route('/')
   .get((req, res) => {
     res.render('index', {
-      products: productDB.products
+      products: database.products.products
     });
   })
   .post(validation({ "name": "string", "price": "number", "inventory": "number"}),
@@ -20,21 +21,23 @@ router.route('/')
     });
 
     Object.defineProperty(newProduct,'id',{
-      value: productDB.products.length,
+      value: database.products.products.length,
       enumerable: true,
       writable: false,
       configurable: false
     });
 
-    productDB.products.push(newProduct);
-    res.redirect('/products/new');
+    database.products.products.push(newProduct);
+    fs.writeFile('./db/database.json', JSON.stringify(database), () => {
+      res.redirect('/');
+    });
   });
 
 router.route('/:id/edit')
   .get( (req,res) => {
     let id = req.params.id;
     res.render('edit', {
-      product : productDB.products[id]
+      product : database.products.products[id]
     });
   });
 
@@ -46,11 +49,11 @@ router.route('/new')
 router.route('/:id')
   .put(validation({ "name": "string", "price": "number", "inventory": "number" }, true), (req, res) => {
     let id = req.params.id;
-    if (productDB.products.length === 0) {
+    if (database.products.products.length === 0) {
       return res.status(400).send('Bad Request: There are no products');
     }
     else {
-      let product = productDB.products[id];
+      let product = database.products.products[id];
         for (let prop in req.body) {
           try {
             if (product.hasOwnProperty(prop) && req.body[prop]){
@@ -61,25 +64,29 @@ router.route('/:id')
             return res.send('Invalid Request: Field Cannot Be Changed');
           }
         }
-        res.redirect('/products');
+    fs.writeFile('./db/database.json', JSON.stringify(database), () => {
+      res.redirect('/');
+    });
     }
   })
   .delete((req,res) => {
     let id = req.params.id;
 
-    if (productDB.products.length === 0) {
+    if (database.products.products.length === 0) {
       return res.status(400).send('Bad Request: There are no products');
     }
     else{
-      let product = productDB.products[id];
+      let product = database.products.products[id];
       for (var prop in product){
         let d = Object.getOwnPropertyDescriptor(product, prop);
-        if(d.writable === true){
+        if(d.writable === true && prop !== 'id'){
           product[prop] = null;
         }
       }
     }
-    res.redirect('/products');
+    fs.writeFile('./db/database.json', JSON.stringify(database), () => {
+      res.redirect('/');
+    });
 
   });
 
