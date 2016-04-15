@@ -18,5 +18,5 @@ block content
         input( name= 'author' value= article.author placeholder= 'author')
         button Submit
 
-    form(method="POST" action="/products/#{product.id}?_method=DELETE")
+    form(method="POST" action="/articles/#{article.title}?_method=DELETE")
       button Delete This
