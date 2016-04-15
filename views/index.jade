@@ -1,16 +1,12 @@
 doctype html
 
-head
-  block title
-    title
-      |Products
-    style
-      include ../public/css/styles.css
+block title
+  title
+    |Products
 
-body
-  block content
-    button
-        a(href= '/products/new' style= 'text-decoration: none') Create New Product
+block content
+button
+    a(href= '/products/new' style= 'text-decoration: none') Create New Product
 
   div(id='productList')
     if(products)
@@ -27,3 +23,9 @@ body
             a(href= '/products/#{product.id}/edit') Edit
           form(method="POST" action="/products/#{product.id}?_method=DELETE")
             button Delete This
+
+    if(products < 1)
+      p Add some products!
+    else
+      form(method="GET" action="/products/deleteAll")
+        button Reset All Products

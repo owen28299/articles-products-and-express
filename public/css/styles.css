@@ -49,8 +49,9 @@ table {
 #middle {
   background: rgba(0, 31, 77, 0.5);
   height: 700px;
-  width: 700px;
-  margin: 100px;
+  width: 50%;
+  margin-left: 25%;
+  margin-top: 10%;
   display: flex;
   justify-content: center;
   border-radius: 20px;
@@ -61,7 +62,7 @@ table {
     font-size: 85px;
     font-style: italic;
     width: 100%;
-    margin-top: 20%;
+    margin-top: 10%;
     font-weight: bold; }
   #middle p {
     font-size: 50px;

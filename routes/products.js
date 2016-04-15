@@ -10,7 +10,7 @@ const express        = require('express'),
 router.route('/')
   .get((req, res) => {
     res.render('index', {
-      products: database.products.products
+      products: productsModel.getAll()
     });
   })
   .post(validation({ "name": "string", "price": "number", "inventory": "number"}),
@@ -84,7 +84,18 @@ router.route('/:id')
     fs.writeFile('./db/database.json', JSON.stringify(database), () => {
       res.redirect('/products');
     });
+  });
 
+router.route('/deleteAll')
+  .get( (req,res) => {
+    productsModel.resetProducts((err) => {
+      if (err){
+        res.send('failed');
+      }
+      else{
+        res.redirect('/products');
+      }
+    });
   });
 
 module.exports = router;

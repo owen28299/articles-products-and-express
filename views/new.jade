@@ -1,26 +1,22 @@
 doctype html
 
-head
-  block title
-    title
-      |New Product
-    style
-      include ../public/css/styles.css
+block title
+  title
+    |New Product
 
-body
-  block content
+block content
 
-    button
-      a(href= '/products' style= 'text-decoration: none') Back
-  sa
-    form(action='/products' method='POST')
-      p Name
-      input(name='name')
-      p Price
-      input(name='price')
-      p Inventory
-      input(name='inventory')
-      button Submit
+  button
+    a(href= '/products' style= 'text-decoration: none') Back
+sa
+  form(action='/products' method='POST')
+    p Name
+    input(name='name')
+    p Price
+    input(name='price')
+    p Inventory
+    input(name='inventory')
+    button Submit
 
 
 
