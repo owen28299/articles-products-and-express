@@ -3,7 +3,8 @@ const express        = require('express'),
       router         = express.Router(),
       database       = require('../db/database.json'),
       validation     = require('../middleware/validation'),
-      fs             = require('fs')
+      fs             = require('fs'),
+      productsModel  = require('../models/productsModel')
       ;
 
 router.route('/')
@@ -14,22 +15,19 @@ router.route('/')
   })
   .post(validation({ "name": "string", "price": "number", "inventory": "number"}),
     (req, res) => {
-    let newProduct = ({
-      'name': req.body.name,
-      'price': req.body.price,
-      'inventory': req.body.inventory
-    });
+      let newProduct = ({
+        'name': req.body.name,
+        'price': req.body.price,
+        'inventory': req.body.inventory
+      });
 
-    Object.defineProperty(newProduct,'id',{
-      value: database.products.products.length,
-      enumerable: true,
-      writable: false,
-      configurable: false
-    });
+      productsModel.addItem(newProduct, (err) => {
+        if(err){
+          return res.json({"error" : "bad inputs"});
+        }
+        res.redirect('/products');
+      });
 
-    database.products.products.push(newProduct);
-    fs.writeFile('./db/database.json', JSON.stringify(database));
-    res.redirect('/products');
   });
 
 router.route('/:id/edit')
