@@ -25,10 +25,27 @@ function productModelFunctions(){
 
   }
 
-  return {
-    addItem : addItem
+  let getAll = () => {
+     return database.products.products;
   };
 
+function resetProducts(callback){
+  console.log('Here');
+  database.products.products = [];
+  fs.writeFile('./db/database.json', JSON.stringify(database), (err) => {
+    if(err){
+      callback(err);
+    } else {
+        callback(null);
+      }
+  });
+}
+
+  return {
+    resetProducts : resetProducts,
+    getAll  : getAll,
+    addItem : addItem
+  };
 }
 
 module.exports = productModelFunctions();
