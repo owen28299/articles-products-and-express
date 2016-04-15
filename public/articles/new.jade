@@ -6,11 +6,14 @@ block title
 
 block content
 
-    form(action='/articles' method='POST')
-      p Title
-      input(name='title')
-      p Body
-      input(name='body')
-      p Author
-      input(name='author')
-      button Submit
+  button
+    a(href= '/articles' style= 'text-decoration: none') Back
+
+  form(action='/articles' method='POST')
+    p Title
+    input(name='title')
+    p Body
+    input(name='body')
+    p Author
+    input(name='author')
+    button Submit

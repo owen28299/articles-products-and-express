@@ -5,6 +5,8 @@ block title
     |Products
 
 block content
+button
+    a(href= '/products/new' style= 'text-decoration: none') Create New Product
 
   if(products)
     mixin createProduct(product)
