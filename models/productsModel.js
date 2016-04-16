@@ -1,5 +1,6 @@
 'use strict';
 const fs       = require('fs'),
+      request  = require('request'),
       database = require('../db/database.json');
 
 function productModelFunctions(){

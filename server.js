@@ -5,9 +5,23 @@ const express        = require('express'),
       articlesRoute  = require('./routes/articles'),
       productsRoute  = require('./routes/products'),
       analytics      = require('./middleware/analytics'),
+      cookieParser   = require('cookie-parser'),
       methodOverride = require('method-override');
+  let pass = false;
+
+        let authentication = () => {
+          return (req, res, next)=>{
+            console.log(req.cookies.user);
+            if (!pass) {
+              return res.redirect('/login')
+            } else {
+              next();
+            }
+          }
+        }
 
       app.use(methodOverride('_method'));
+      app.use(cookieParser());
 
       app.set('view engine', 'jade');
       app.set('views', 'views');
@@ -19,8 +33,8 @@ const express        = require('express'),
 
       app.use(analytics)
         .use(express.static('public'))
-        .use('/articles', articlesRoute)
-        .use('/products', productsRoute)
+        .use('/articles', authentication(), articlesRoute)
+        .use('/products', authentication(), productsRoute)
         ;
 
 
@@ -30,9 +44,14 @@ const express        = require('express'),
 
       app.post('/login', (req, res) => {
           if (req.body.username === 'Hello' && req.body.password === 'World') {
-            console.log('Authentication Verified')
+            req.cookies.user = req.body.username;
+            req.cookies.password = req.body.password;
+            pass = true;
+            console.log('Authentication Verified');
+            res.redirect('/')
           } else {
             console.log('please try again')
+            res.redirect('/login')
           }
         });
 

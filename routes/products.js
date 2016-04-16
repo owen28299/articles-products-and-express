@@ -4,14 +4,9 @@ const express        = require('express'),
       database       = require('../db/database.json'),
       validation     = require('../middleware/validation'),
       fs             = require('fs'),
+      cookieParser   = require('cookie-parser'),
       productsModel  = require('../models/productsModel')
       ;
-
-
-router.route('/login')
-  .get((req, res) => {
-    res.render('login')
-  })
 
 router.route('/')
   .get((req, res) => {
