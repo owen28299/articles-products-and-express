@@ -4,6 +4,7 @@ const express        = require('express'),
       database       = require('../db/database.json'),
       validation     = require('../middleware/validation'),
       fs             = require('fs'),
+      cookieParser   = require('cookie-parser'),
       productsModel  = require('../models/productsModel')
       ;
 
@@ -13,6 +14,7 @@ router.route('/')
       products: productsModel.getAll()
     });
   })
+
   .post(validation({ "name": "string", "price": "number", "inventory": "number"}),
     (req, res) => {
       let newProduct = ({
