@@ -23,8 +23,12 @@ app.use(analytics)
   .use('/products', productsRoute)
   ;
 
-const server = app.listen(3000, () => {
-  let host = server.address().address,
-      port = server.address().port;
-  console.log('listening at http://%s:%s', host, port);
-});
+if(!module.parent) {
+  const server = app.listen(3000, () => {
+    let host = server.address().address,
+        port = server.address().port;
+    console.log('listening at http://%s:%s', host, port);
+  });
+}
+
+module.exports = app;
