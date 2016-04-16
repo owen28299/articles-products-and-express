@@ -4,14 +4,12 @@ const express        = require('express'),
       bodyParser     = require('body-parser'),
       articlesRoute  = require('./routes/articles'),
       productsRoute  = require('./routes/products'),
+      loginRoute     = require('./routes/login'),
       analytics      = require('./middleware/analytics'),
       methodOverride = require('method-override'),
-      authentication = require('./middleware/authentication')
+      authentication = require('./middleware/authentication'),
+      pass = require('./db/pass.js')
       ;
-
-let pass = {
-  access : false
-};
 
 app.use(methodOverride('_method'));
 
@@ -25,22 +23,10 @@ app.use(bodyParser.urlencoded({
 
 app.use(analytics)
   .use(express.static('public'))
+  .use('/login', loginRoute)
   .use('/articles', authentication(pass), articlesRoute)
   .use('/products', authentication(pass), productsRoute)
   ;
-
-app.get('/login', (req, res) => {
-    res.render('login');
-  });
-
-app.post('/login', (req, res) => {
-    if (req.body.username === 'Hello' && req.body.password === 'World') {
-      pass.access = true;
-      res.redirect('/');
-    } else {
-      res.redirect('/login');
-    }
-  });
 
 if(!module.parent) {
   const server = app.listen(3000, () => {
