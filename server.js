@@ -5,23 +5,15 @@ const express        = require('express'),
       articlesRoute  = require('./routes/articles'),
       productsRoute  = require('./routes/products'),
       analytics      = require('./middleware/analytics'),
-      cookieParser   = require('cookie-parser'),
-      methodOverride = require('method-override');
+      methodOverride = require('method-override'),
+      authentication = require('./middleware/authentication')
+      ;
 
-let pass = false;
-
-let authentication = () => {
-  return (req, res, next)=>{
-    if (!pass && module.parent) {
-      return res.redirect('/login');
-    } else {
-      next();
-    }
-  };
+let pass = {
+  access : false
 };
 
 app.use(methodOverride('_method'));
-app.use(cookieParser());
 
 app.set('view engine', 'jade');
 app.set('views', 'views');
@@ -33,8 +25,8 @@ app.use(bodyParser.urlencoded({
 
 app.use(analytics)
   .use(express.static('public'))
-  .use('/articles', authentication(), articlesRoute)
-  .use('/products', authentication(), productsRoute)
+  .use('/articles', authentication(pass), articlesRoute)
+  .use('/products', authentication(pass), productsRoute)
   ;
 
 app.get('/login', (req, res) => {
@@ -43,9 +35,7 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
     if (req.body.username === 'Hello' && req.body.password === 'World') {
-      req.cookies.user = req.body.username;
-      req.cookies.password = req.body.password;
-      pass = true;
+      pass.access = true;
       res.redirect('/');
     } else {
       res.redirect('/login');
