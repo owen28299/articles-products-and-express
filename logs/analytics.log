@@ -8,3 +8,39 @@
 
 ["GET"] ["/articles"] ["2016-04-16T04:31:08.839Z"] [{"host":"localhost:3000","connection":"keep-alive","pragma":"no-cache","cache-control":"no-cache","accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8","upgrade-insecure-requests":"1","user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36","referer":"http://localhost:3000/articles","accept-encoding":"gzip, deflate, sdch","accept-language":"en-US,en;q=0.8"}]
 
+["GET"] ["/articles"] ["2016-04-16T04:41:14.122Z"] [{"host":"127.0.0.1:50973","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","connection":"close"}]
+
+["POST"] ["/articles"] ["2016-04-16T04:41:14.170Z"] [{"host":"127.0.0.1:50975","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","content-type":"application/x-www-form-urlencoded","content-length":"76","connection":"close"}]
+
+["POST"] ["/articles"] ["2016-04-16T04:41:14.179Z"] [{"host":"127.0.0.1:50977","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","content-type":"application/x-www-form-urlencoded","content-length":"63","connection":"close"}]
+
+["GET"] ["/articles/HarryPotter/edit"] ["2016-04-16T04:41:14.184Z"] [{"host":"127.0.0.1:50979","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","connection":"close"}]
+
+["GET"] ["/articles/new"] ["2016-04-16T04:41:14.188Z"] [{"host":"127.0.0.1:50981","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","connection":"close"}]
+
+["PUT"] ["/articles/HarryPotter"] ["2016-04-16T04:41:14.193Z"] [{"host":"127.0.0.1:50983","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","content-type":"application/x-www-form-urlencoded","content-length":"78","connection":"close"}]
+
+["PUT"] ["/articles/HarryPotter"] ["2016-04-16T04:41:14.203Z"] [{"host":"127.0.0.1:50985","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","content-type":"application/x-www-form-urlencoded","content-length":"68","connection":"close"}]
+
+["DELETE"] ["/articles/HarryPotter"] ["2016-04-16T04:41:14.207Z"] [{"host":"127.0.0.1:50987","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","connection":"close"}]
+
+["GET"] ["/articles/deleteAll"] ["2016-04-16T04:41:14.211Z"] [{"host":"127.0.0.1:50989","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","connection":"close"}]
+
+["GET"] ["/products"] ["2016-04-16T04:41:14.216Z"] [{"host":"127.0.0.1:50991","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","connection":"close"}]
+
+["POST"] ["/products"] ["2016-04-16T04:41:14.219Z"] [{"host":"127.0.0.1:50993","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","content-type":"application/x-www-form-urlencoded","content-length":"31","connection":"close"}]
+
+["POST"] ["/products"] ["2016-04-16T04:41:14.225Z"] [{"host":"127.0.0.1:50995","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","content-type":"application/x-www-form-urlencoded","content-length":"38","connection":"close"}]
+
+["GET"] ["/products/0/edit"] ["2016-04-16T04:41:14.228Z"] [{"host":"127.0.0.1:50997","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","connection":"close"}]
+
+["GET"] ["/products/new"] ["2016-04-16T04:41:14.232Z"] [{"host":"127.0.0.1:50999","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","connection":"close"}]
+
+["PUT"] ["/products/1"] ["2016-04-16T04:41:14.237Z"] [{"host":"127.0.0.1:51001","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","content-type":"application/x-www-form-urlencoded","content-length":"33","connection":"close"}]
+
+["PUT"] ["/products/1"] ["2016-04-16T04:41:14.241Z"] [{"host":"127.0.0.1:51003","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","content-type":"application/x-www-form-urlencoded","content-length":"47","connection":"close"}]
+
+["DELETE"] ["/products/1"] ["2016-04-16T04:41:14.244Z"] [{"host":"127.0.0.1:51005","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","connection":"close"}]
+
+["GET"] ["/products/deleteAll"] ["2016-04-16T04:41:14.248Z"] [{"host":"127.0.0.1:51007","accept-encoding":"gzip, deflate","user-agent":"node-superagent/1.8.3","connection":"close"}]
+
