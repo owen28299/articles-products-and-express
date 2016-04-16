@@ -7,12 +7,19 @@ const express        = require('express'),
       productsModel  = require('../models/productsModel')
       ;
 
+
+router.route('/login')
+  .get((req, res) => {
+    res.render('login')
+  })
+
 router.route('/')
   .get((req, res) => {
     res.render('index', {
       products: productsModel.getAll()
     });
   })
+
   .post(validation({ "name": "string", "price": "number", "inventory": "number"}),
     (req, res) => {
       let newProduct = ({

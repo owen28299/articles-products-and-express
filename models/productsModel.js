@@ -30,7 +30,6 @@ function productModelFunctions(){
   };
 
 function resetProducts(callback){
-  console.log('Here');
   database.products.products = [];
   fs.writeFile('./db/database.json', JSON.stringify(database), (err) => {
     if(err){
