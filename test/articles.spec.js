@@ -1,13 +1,30 @@
 'use strict';
 
-const request  = require('supertest'),
-      app      = require('../server.js'),
-      database = require('../db/database.json'),
-      chai     = require('chai'),
-      expect   = chai.expect
+const request       = require('supertest'),
+      app           = require('../server.js'),
+      database      = require('../db/database.json'),
+      chai          = require('chai'),
+      expect        = chai.expect
       ;
 
 describe('article routes', () => {
+
+  it('should allow Hello World to pass', (done) => {
+    request(app)
+    .post('/login')
+    .set('Content-Type', 'application/x-www-form-urlencoded')
+    .send({
+      "username" : "Hello",
+      "password" : "World"
+    })
+    .end((err,res) => {
+      if(err) {
+        return done(err);
+      }
+      done();
+    });
+  });
+
   let entry = {
     "title" : "HarryPotter",
     "body" : "7 long books",
@@ -44,7 +61,7 @@ describe('article routes', () => {
         .post('/articles')
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .send(body)
-        .expect(200)
+        .expect(302)
         .end((err,res) => {
           if(err) {
             return done(err);
@@ -178,7 +195,7 @@ describe('article routes', () => {
 
       request(app)
         .get('/articles/deleteAll')
-        .expect(200)
+        .expect(302)
         .end((err,res) => {
           if(err) {
             return done(err);

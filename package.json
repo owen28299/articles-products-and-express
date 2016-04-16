@@ -20,6 +20,7 @@
   "homepage": "https://github.com/owen28299/articles-products-and-express#readme",
   "dependencies": {
     "consolidate": "^0.14.0",
+    "cookie-parser": "^1.4.1",
     "express": "^4.13.4",
     "jade": "^1.11.0",
     "method-override": "^2.3.5"

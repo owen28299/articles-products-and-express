@@ -8,6 +8,23 @@ const request  = require('supertest'),
       ;
 
 describe('product routes', () => {
+  it('should allow Hello World to pass', (done) => {
+    request(app)
+    .post('/login')
+    .set('Content-Type', 'application/x-www-form-urlencoded')
+    .send({
+      "username" : "Hello",
+      "password" : "World"
+    })
+    .end((err,res) => {
+      if(err) {
+        return done(err);
+      }
+      done();
+    });
+  });
+
+
   let entry = {
     "name" : "apple",
     "price" : 10,
@@ -184,7 +201,7 @@ describe('product routes', () => {
 
       request(app)
         .get('/products/deleteAll')
-        .expect(200)
+        .expect(302)
         .end((err,res) => {
           if(err) {
             return done(err);

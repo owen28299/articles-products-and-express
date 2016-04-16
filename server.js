@@ -7,53 +7,50 @@ const express        = require('express'),
       analytics      = require('./middleware/analytics'),
       cookieParser   = require('cookie-parser'),
       methodOverride = require('method-override');
-  let pass = false;
 
-        let authentication = () => {
-          return (req, res, next)=>{
-            console.log(req.cookies.user);
-            if (!pass) {
-              return res.redirect('/login')
-            } else {
-              next();
-            }
-          }
-        }
+let pass = false;
 
-      app.use(methodOverride('_method'));
-      app.use(cookieParser());
+let authentication = () => {
+  return (req, res, next)=>{
+    if (!pass && module.parent) {
+      return res.redirect('/login');
+    } else {
+      next();
+    }
+  };
+};
 
-      app.set('view engine', 'jade');
-      app.set('views', 'views');
+app.use(methodOverride('_method'));
+app.use(cookieParser());
 
-      app.use(bodyParser.json());
-      app.use(bodyParser.urlencoded({
-        extended: true
-      }));
+app.set('view engine', 'jade');
+app.set('views', 'views');
 
-      app.use(analytics)
-        .use(express.static('public'))
-        .use('/articles', authentication(), articlesRoute)
-        .use('/products', authentication(), productsRoute)
-        ;
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
+app.use(analytics)
+  .use(express.static('public'))
+  .use('/articles', authentication(), articlesRoute)
+  .use('/products', authentication(), productsRoute)
+  ;
 
-      app.get('/login', (req, res) => {
-          res.render('login')
-        });
+app.get('/login', (req, res) => {
+    res.render('login');
+  });
 
-      app.post('/login', (req, res) => {
-          if (req.body.username === 'Hello' && req.body.password === 'World') {
-            req.cookies.user = req.body.username;
-            req.cookies.password = req.body.password;
-            pass = true;
-            console.log('Authentication Verified');
-            res.redirect('/')
-          } else {
-            console.log('please try again')
-            res.redirect('/login')
-          }
-        });
+app.post('/login', (req, res) => {
+    if (req.body.username === 'Hello' && req.body.password === 'World') {
+      req.cookies.user = req.body.username;
+      req.cookies.password = req.body.password;
+      pass = true;
+      res.redirect('/');
+    } else {
+      res.redirect('/login');
+    }
+  });
 
 if(!module.parent) {
   const server = app.listen(3000, () => {
