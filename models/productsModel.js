@@ -1,48 +1,72 @@
 'use strict';
+/*jshint multistr: true */
 
 const fs       = require('fs'),
-      database = require('../db/database.json');
+      database = require('../db/database.json'),
+      pgp = require('pg-promise')(),
+      password = require('./password.js')
+      ;
+
+var cn = {
+  host: 'localhost',
+  port: 5432,
+  database: 'articles_and_products',
+  user: 'owen',
+  password: password.string
+};
+
+var db = pgp(cn);
+
 
 function productModelFunctions(){
 
   function addItem (newProduct, callback){
 
-    Object.defineProperty(newProduct,'id',{
-      value: database.products.products.length,
-      enumerable: true,
-      writable: false,
-      configurable: false
-    });
+    let name = (newProduct.name);
+    let price = (newProduct.price);
+    let inventory = (newProduct.inventory);
 
-    database.products.products.push(newProduct);
-    fs.writeFile('./db/database.json', JSON.stringify(database), (err) => {
-      if(err){
-        callback(err);
-      }
-      else{
-        callback(null);
-      }
+    db.query('INSERT INTO products\
+      (name, price, inventory)\
+      values ($1, $2, $3);',
+      [name, price, inventory])
+    .then(function(){
+      callback(null);
+    })
+    .catch(function(error){
+      callback(error);
     });
-
   }
 
-  let getAll = () => {
-     return database.products.products;
+  let getAll = (callback) => {
+    db.query('SELECT * FROM products')
+    .then(function(products){
+      callback(products);
+    })
+    .catch(function(err){
+      return (err);
+    });
   };
 
   function resetProducts(callback){
-    database.products.products = [];
-    fs.writeFile('./db/database.json', JSON.stringify(database), (err) => {
-      if(err){
-        callback(err);
-      } else {
-          callback(null);
-        }
+    db.query('TRUNCATE TABLE products')
+    .then(function(){
+      callback(null);
+    })
+    .catch(function(error){
+      callback(error);
     });
   }
 
-  function getProduct(id){
-    return database.products.products[id];
+  function getProduct(id, callback){
+    db.query('SELECT * FROM products\
+     WHERE id = $1', id)
+    .then(function(product){
+      callback(null, product);
+    })
+    .catch(function(error){
+      callback(error);
+    });
   }
 
   function changeProduct(id,changes,callback){
