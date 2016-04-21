@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS articles;
 CREATE TABLE products (
   id SERIAL PRIMARY KEY,
   name varchar(150) NOT NULL,
-  price money NOT NULL,
+  price decimal NOT NULL,
   inventory integer NOT NULL
   );
 
