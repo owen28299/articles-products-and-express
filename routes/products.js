@@ -7,7 +7,6 @@ const express        = require('express'),
 
 router.route('/')
   .get((req, res) => {
-
     productsModel.getAll(function(products){
       res.render('index', {
         products: products

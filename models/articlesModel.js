@@ -1,19 +1,7 @@
 'use strict';
 /*jshint multistr: true */
 
-const pgp = require('pg-promise')(),
-      password = require('./password.js')
-      ;
-
-var cn = {
-  host: 'localhost',
-  port: 5432,
-  database: 'articles_and_products',
-  user: password.user,
-  password: password.password
-};
-
-var db = pgp(cn);
+const db = require('../psql/connection.js');
 
 function articleModelFunctions(){
 

@@ -1,20 +1,8 @@
 'use strict';
 /*jshint multistr: true */
 
-const pgp = require('pg-promise')(),
-      password = require('./password.js')
+const db = require('../psql/connection.js')
       ;
-
-var cn = {
-  host: 'localhost',
-  port: 5432,
-  database: 'articles_and_products',
-  user: 'tyleryoung',
-  password: password.string
-};
-
-var db = pgp(cn);
-
 
 function productModelFunctions(){
 
@@ -42,7 +30,7 @@ function productModelFunctions(){
       callback(products);
     })
     .catch(function(err){
-      return (err);
+      callback(err);
     });
   };
 
