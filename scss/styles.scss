@@ -10,30 +10,35 @@ $background: hsla(216,100%,15%,0.5);
 
 
 #middle {
-  background: $background;
-  height: 700px;
-  width: 50%;
-  margin-left: 25%;
-  margin-top: 10%;
+  background: RGBA(23, 29, 50, 0.50);
+  height: 275px;
+  width: 70%;
+  margin-left: 15%;
+  margin-top: 2%;
   display: flex;
   justify-content: center;
   border-radius: 20px;
   flex-wrap: wrap;
   text-align: center;
+  z-index: 3;
+  position: absolute;
 
   h1{
     color: $color5;
-    font-size: 85px;
+    font-size: 10vw;
     font-style: italic;
     width: 100%;
-    margin-top: 10%;
+    margin-top: 3%;
     font-weight: bold;
   }
 
   p{
-    font-size: 50px;
+    font-size: 4vw;
     color: $color5;
-    margin: 30px;
+    margin-left: 7%;
+    margin-right: 5%;
+
+
   }
 
   a{
@@ -48,8 +53,40 @@ html {
   -o-background-size: cover;
   background-size: cover;
   font-family: 'Raleway', sans-serif;
+  // position: fixed;
 }
 
 #productList {
 
+}
+
+// #articleList {
+
+//   #articleImageDiv
+//     background-image: url('http://i.imgur.com/62XP5DK.jpg');
+//     border-image-width: 100%
+
+// }
+
+ #articlesImageDiv {
+    opacity: 0.0;
+    transition: opacity 1s ease-in-out;
+    -moz-transition: opacity 1s ease-in-out;
+    -webkit-transition: opacity 1s ease-in-out;
+    width: 100%;
+    height: 1000px;
+    image: url('http://i.imgur.com/62XP5DK.jpg');
+    position: relative;
+    z-index: -1;
+}
+
+#articlesImageDiv:hover {
+    opacity: 1.0;
+    transition: opacity .55s ease-in-out;
+    -moz-transition: opacity .55s ease-in-out;
+    -webkit-transition: opacity .55s ease-in-out;
+}
+
+#right{
+  background-color: red;
 }
