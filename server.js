@@ -1,65 +1,39 @@
 'use strict';
-const express = require('express'),
-    app = express(),
-    bodyParser = require('body-parser'),
-    articlesRoute = require('./routes/articles'),
-    productsRoute = require('./routes/products'),
-    analytics = require('./middleware/analytics'),
-    cookieParser = require('cookie-parser'),
-    methodOverride = require('method-override');
-let pass = false;
-
-let authentication = () => {
-    return (req, res, next) => {
-        console.log(req.cookies.user);
-        if (!pass) {
-            return res.redirect('/login')
-        } else {
-            next();
-        }
-    }
-}
+const express        = require('express'),
+      app            = express(),
+      bodyParser     = require('body-parser'),
+      articlesRoute  = require('./routes/articles'),
+      productsRoute  = require('./routes/products'),
+      loginRoute     = require('./routes/login'),
+      analytics      = require('./middleware/analytics'),
+      methodOverride = require('method-override'),
+      authentication = require('./middleware/authentication'),
+      pass = require('./db/pass.js')
+      ;
 
 app.use(methodOverride('_method'));
-app.use(cookieParser());
 
 app.set('view engine', 'jade');
 app.set('views', 'views');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-    extended: true
+  extended: true
 }));
 
 app.use(analytics)
-    .use(express.static('public'))
-    .use('/articles', authentication(), articlesRoute)
-    .use('/products', authentication(), productsRoute);
+  .use(express.static('public'))
+  .use('/login', loginRoute)
+  .use('/articles', authentication(pass), articlesRoute)
+  .use('/products', authentication(pass), productsRoute)
+  ;
 
-
-app.get('/login', (req, res) => {
-    res.render('login')
-});
-
-app.post('/login', (req, res) => {
-    if (req.body.username === 'Hello' && req.body.password === 'World') {
-        req.cookies.user = req.body.username;
-        req.cookies.password = req.body.password;
-        pass = true;
-        console.log('Authentication Verified');
-        res.redirect('/')
-    } else {
-        console.log('Please try again')
-        res.redirect('/login')
-    }
-});
-
-if (!module.parent) {
-    const server = app.listen(3000, () => {
-        let host = server.address().address,
-            port = server.address().port;
-        console.log('listening at http://%s:%s', host, port);
-    });
+if(!module.parent) {
+  const server = app.listen(3000, () => {
+    let host = server.address().address,
+        port = server.address().port;
+    console.log('listening at http://%s:%s', host, port);
+  });
 }
 
 module.exports = app;
