@@ -1,4 +1,5 @@
 'use strict';
+/*jshint multistr: true */
 
 const pgp = require('pg-promise')(),
       password = require('../models/password.js')
@@ -21,5 +22,30 @@ var cn = {
 };
 
 var db = pgp(cn);
+
+if(env === 'test'){
+  db.query('DROP TABLE IF EXISTS products;')
+  .then(function(){
+    return db.query('DROP TABLE IF EXISTS articles;');
+  })
+  .then(function(){
+    return db.query('CREATE TABLE products (\
+    id SERIAL PRIMARY KEY,\
+    name varchar(150) NOT NULL,\
+    price decimal NOT NULL,\
+    inventory integer NOT NULL\
+    );');
+  })
+  .then(function(){
+    db.query('CREATE TABLE articles (\
+    id SERIAL PRIMARY KEY,\
+    title varchar(150) NOT NULL,\
+    body varchar(255) NOT NULL,\
+    author varchar(150) NOT NULL\
+    );');
+  });
+
+
+}
 
 module.exports = db;

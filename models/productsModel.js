@@ -30,7 +30,7 @@ function productModelFunctions(){
       callback(products);
     })
     .catch(function(err){
-      return (err);
+      callback(err);
     });
   };
 
