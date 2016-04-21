@@ -1,4 +1,5 @@
 'use strict';
+/*jshint multistr: true */
 
 const request  = require('supertest'),
       app      = require('../server.js'),
@@ -6,6 +7,7 @@ const request  = require('supertest'),
       chai     = require('chai'),
       expect   = chai.expect
       ;
+
 
 describe('product routes', () => {
   it('should allow Hello World to pass', (done) => {
@@ -16,6 +18,7 @@ describe('product routes', () => {
       "username" : "Hello",
       "password" : "World"
     })
+    .expect(302)
     .end((err,res) => {
       if(err) {
         return done(err);
@@ -25,13 +28,8 @@ describe('product routes', () => {
   });
 
 
-  let entry = {
-    "name" : "apple",
-    "price" : 10,
-    "inventory" : 100
-  };
 
-  database.products.products.push(entry);
+
   var originalLength = database.products.products.length;
 
   describe('GET /products', () => {
@@ -52,24 +50,33 @@ describe('product routes', () => {
   describe('POST /products', () => {
     it('should create a new product', (done) => {
 
-      let body = {
-        "name" : "pear",
-        "price" : 12,
-        "inventory" : 50
+      let price = Math.floor(Math.random() * 100);
+      let inventory = Math.floor(Math.random() * 1000);
+
+      let entry = {
+        "name" : "apple",
+        "price" : price,
+        "inventory" : inventory
       };
+
+
 
       request(app)
         .post('/products')
         .set('Content-Type', 'application/x-www-form-urlencoded')
-        .send(body)
+        .send(entry)
         .expect(302)
-        .end((err,res) => {
-          if(err) {
-            return done(err);
-          }
-          expect(database.products.products).to.have.length.above(originalLength);
-          done();
+        .end(() => {
+            done();
         });
+
+        db.query('SELECT * FROM products\
+                  WHERE price = $1 AND inventory = $2;',
+          [price, inventory])
+        .then(function(products){
+          expect(products).to.equal('HELLO WORLD');
+        });
+
     });
 
     it('should fail on bad inputs', (done) => {
