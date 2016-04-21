@@ -17,7 +17,7 @@ var cn = {
   host: 'localhost',
   port: 5432,
   database: database,
-  user: 'owen',
+  user: password.user,
   password: password.string
 };
 

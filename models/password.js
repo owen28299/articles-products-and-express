@@ -1,4 +1,5 @@
 var password = {
+  user: 'owen',
   string: 'owen2016'
 };
 
