@@ -30,7 +30,7 @@
     "browser-sync": "^2.12.3",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
-    "gulp-sass": "^2.2.0",
+    "gulp-sass": "^2.3.0",
     "mocha": "^2.4.5",
     "supertest": "^1.2.0"
   }
