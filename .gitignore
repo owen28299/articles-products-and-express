@@ -1,3 +1,4 @@
 node_modules/
 logs/analytics.log
 db/database.json
+models/password.js
