@@ -9,7 +9,7 @@ var cn = {
   host: 'localhost',
   port: 5432,
   database: 'articles_and_products',
-  user: 'owen',
+  user: 'tyleryoung',
   password: password.string
 };
 

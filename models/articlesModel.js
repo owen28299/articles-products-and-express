@@ -9,8 +9,8 @@ var cn = {
   host: 'localhost',
   port: 5432,
   database: 'articles_and_products',
-  user: 'owen',
-  password: password.string
+  user: password.user,
+  password: password.password
 };
 
 var db = pgp(cn);

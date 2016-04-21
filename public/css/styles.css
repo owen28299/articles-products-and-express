@@ -75,7 +75,7 @@ table {
     text-decoration: none; }
 
 html {
-  background: url(cityscape.jpg) no-repeat center center fixed;
+  background: url(cityscape.jpg) no-repeat center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -83,21 +83,76 @@ html {
   font-family: 'Raleway', sans-serif; }
 
 #articlesImageDiv {
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  margin-top: -967px; }
+
+#right {
+  background-color: red;
+  width: 33%;
+  height: 27%;
+  margin-left: 52%;
+  position: absolute;
+  z-index: 4;
+  opacity: 0.0; }
+
+#articlesImg {
+  width: 110%;
+  height: 110%;
+  margin-top: -10%;
   opacity: 0.0;
+  position: absolute;
+  transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -webkit-transition: opacity 1s ease-in-out; }
+
+#rightLink:hover ~ #articlesImg {
+  opacity: 1.0;
+  transition: opacity .85s ease-in-out;
+  -moz-transition: opacity .85s ease-in-out;
+  -webkit-transition: opacity .85s ease-in-out; }
+
+#productImageDiv {
+  width: 100%;
+  height: 1000px;
+  z-index: 2; }
+
+#left {
+  background-color: blue;
+  width: 37%;
+  height: 27%;
+  margin-left: 15%;
+  margin-top: 2%;
+  position: absolute;
+  z-index: 4;
+  opacity: 0.0; }
+
+#productImg {
+  opacity: 0.0;
+  height: 105%;
+  width: 101%;
+  position: absolute;
   transition: opacity 1s ease-in-out;
   -moz-transition: opacity 1s ease-in-out;
   -webkit-transition: opacity 1s ease-in-out;
-  width: 100%;
-  height: 1000px;
-  image: url("http://i.imgur.com/62XP5DK.jpg");
-  position: relative;
-  z-index: -1; }
+  height: 100%;
+  width: 100%; }
 
-#articlesImageDiv:hover {
+#leftLink:hover ~ #productImg {
   opacity: 1.0;
-  transition: opacity .55s ease-in-out;
-  -moz-transition: opacity .55s ease-in-out;
-  -webkit-transition: opacity .55s ease-in-out; }
+  transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -webkit-transition: opacity 1s ease-in-out; }
 
-#right {
-  background-color: red; }
+#loginContainer {
+  color: white;
+  background-color: black;
+  opacity: 0.5;
+  width: 70%;
+  margin-left: 16%;
+  margin-top: 2%;
+  border-radius: 15px; }
+
+#formContainer {
+  margin-left: 40%; }
