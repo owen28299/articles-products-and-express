@@ -37,5 +37,3 @@ if(!module.parent) {
 }
 
 module.exports = app;
-
-console.log('Hello World -Tyler');
