@@ -10,7 +10,7 @@ block content
     a(href= '/articles' style= 'text-decoration: none') Back
 
   if(article)
-    form(method="POST" action="/articles/#{article.title}?_method=PUT")
+    form(method="POST" action="/articles/#{article.id}?_method=PUT")
         p= 'title'
         input( name= 'title' value= article.title placeholder= 'title')
 
@@ -23,5 +23,5 @@ block content
         br
         button Submit
 
-    form(method="POST" action="/articles/#{article.title}?_method=DELETE")
+    form(method="POST" action="/articles/#{article.id}?_method=DELETE")
       button Delete This
