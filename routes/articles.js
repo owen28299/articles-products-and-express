@@ -1,15 +1,14 @@
 'use strict';
 const express = require('express'),
       router = express.Router(),
-      database = require('../db/database.json'),
       validation = require('../middleware/validation'),
-      fs = require('fs')
+      articlesModel = require('../models/articlesModel')
       ;
 
 router.route('/')
   .get ((req, res) => {
     res.render('./articles/index', {
-      articles: database.articles,
+      articles: articlesModel.getAll()
     });
   })
   .post(validation({ "title": "string", "body": "string", "author": "string"}), (req,res) => {
@@ -19,24 +18,26 @@ router.route('/')
       'author': req.body.author,
       'urlTitle': encodeURI(req.body.title)
     });
-    if(!database.articles.hasOwnProperty(req.body.title)){
-      database.articles[req.body.title] = newArticle;
-      fs.writeFile('./db/database.json', JSON.stringify(database), () => {
+
+    articlesModel.addArticle(newArticle, (err) => {
+      if(err){
+        res.json({
+          success: false,
+          reason: err
+        });
+      }
+      else{
         res.redirect('/articles');
-      });
-    }
-    else {
-      res.json({ success: false });
-    }
+      }
 
-
+    });
   });
 
 router.route('/:title/edit')
   .get( (req,res) => {
     let title = req.params.title;
     res.render('./articles/edit', {
-      article: database.articles[title],
+      article: articlesModel.getTitle(title)
     });
   });
 
@@ -50,29 +51,45 @@ router.route('/:title')
     let title = req.params.title;
     var changes = req.body;
 
-    for (var prop in changes){
-      if(database.articles[title].hasOwnProperty(prop) && prop !== 'title'){
-        database.articles[title][prop] = changes[prop];
+    articlesModel.changeArticle(title, changes, (err) => {
+      if(err){
+        return res.json({
+          success : false,
+          reason : err
+        });
       }
-    }
-    fs.writeFile('./db/database.json', JSON.stringify(database), () => {
-      res.redirect('/articles');
+      else{
+        res.redirect('/articles');
+      }
     });
   })
   .delete((req,res) => {
     let title = req.params.title;
 
-    if(database.articles.hasOwnProperty(title)){
-      delete database.articles[title];
-      fs.writeFile('./db/database.json', JSON.stringify(database), () => {
+    articlesModel.deleteArticle(title, (err) => {
+      if(err){
+        res.send({
+          success : false,
+          reason : err
+        });
+      }
+      else{
         res.redirect('/articles');
-      });
-    }
+      }
+    });
 
-    else {
-      res.send({success: false});
-    }
+  });
 
+router.route('/deleteAll')
+  .get( (req,res) => {
+    articlesModel.resetArticles((err) => {
+      if (err){
+        res.send('failed');
+      }
+      else{
+        res.redirect('/products');
+      }
+    });
   });
 
 module.exports = router;

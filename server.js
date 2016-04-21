@@ -4,8 +4,12 @@ const express        = require('express'),
       bodyParser     = require('body-parser'),
       articlesRoute  = require('./routes/articles'),
       productsRoute  = require('./routes/products'),
+      loginRoute     = require('./routes/login'),
       analytics      = require('./middleware/analytics'),
-      methodOverride = require('method-override');
+      methodOverride = require('method-override'),
+      authentication = require('./middleware/authentication'),
+      pass = require('./db/pass.js')
+      ;
 
 app.use(methodOverride('_method'));
 
@@ -19,8 +23,9 @@ app.use(bodyParser.urlencoded({
 
 app.use(analytics)
   .use(express.static('public'))
-  .use('/articles', articlesRoute)
-  .use('/products', productsRoute)
+  .use('/login', loginRoute)
+  .use('/articles', authentication(pass), articlesRoute)
+  .use('/products', authentication(pass), productsRoute)
   ;
 
 if(!module.parent) {
