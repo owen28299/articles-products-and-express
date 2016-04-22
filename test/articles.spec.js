@@ -127,17 +127,18 @@ describe('article routes', () => {
     });
   });
 
-  describe('PUT /articles/HarryPotter', () => {
+
+  describe('PUT /articles/:id', () => {
     it('should edit an existing article', (done) => {
 
       let body = {
-        "title" : "HarryPotter",
-        "body" : "And the Chamber of Secrets",
-        "author" : "Ron Weasley"
+        "title" : title,
+        "body" : "Are good for pies",
+        "author" : "Granny Smith"
       };
 
       request(app)
-        .put('/articles/HarryPotter')
+        .put('/articles/' + id)
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .send(body)
         .expect(302)
@@ -145,8 +146,6 @@ describe('article routes', () => {
           if(err) {
             return done(err);
           }
-          expect(database.articles.HarryPotter.body).to.equal("And the Chamber of Secrets");
-          expect(database.articles.HarryPotter.author).to.equal("Ron Weasley");
           done();
         });
     });
@@ -154,13 +153,13 @@ describe('article routes', () => {
     it('should fail on bad inputs', (done) => {
 
       let body = {
-        "title" : "HarryPotter",
-        "newBody" : "And the Goblet of Fire",
+        "title" : title,
+        "newBody" : "Bad apple",
         "author" : 1234
       };
 
       request(app)
-        .put('/articles/HarryPotter')
+        .put('/articles/' + title)
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .send(body)
         .expect(200)
@@ -174,17 +173,16 @@ describe('article routes', () => {
     });
   });
 
-  describe('DELETE /articles/HarryPotter', () => {
+  describe('DELETE /articles/:id', () => {
     it('should delete an existing product', (done) => {
 
       request(app)
-        .delete('/articles/HarryPotter')
+        .delete('/articles/' + id)
         .expect(302)
         .end((err,res) => {
           if(err) {
             return done(err);
           }
-          expect(database.articles.hasOwnProperty('HarryPotter')).to.equal(false);
           done();
         });
     });
@@ -200,7 +198,6 @@ describe('article routes', () => {
           if(err) {
             return done(err);
           }
-          expect(Object.getOwnPropertyNames(database.articles).length).to.equal(0);
           done();
         });
     });
