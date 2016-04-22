@@ -7,11 +7,16 @@ const express = require('express'),
 
 router.route('/')
   .get ((req, res) => {
-    articlesModel.getAll(function(articles){
-      res.render('./articles/index', {
-        articles: articles
+    articlesModel.getAll()
+      .then(function(articles){
+        res.render('./articles/index', {
+          articles: articles
+        });
+      })
+      .catch(function(error){
+        res.send(error);
       });
-    });
+
 
   })
   .post(validation({ "title": "string", "body": "string", "author": "string"}), (req,res) => {
@@ -88,14 +93,14 @@ router.route('/:id')
 
 router.route('/deleteAll')
   .get( (req,res) => {
-    articlesModel.resetArticles((err) => {
-      if (err){
-        res.send('failed');
-      }
-      else{
-        res.redirect('/articles');
-      }
+    articlesModel.resetArticles()
+    .then(function(){
+      res.redirect('/articles');
+    })
+    .catch(function(error){
+      res.send(error);
     });
-  });
+
+    });
 
 module.exports = router;
