@@ -5,9 +5,9 @@ const express        = require('express'),
       articlesRoute  = require('./routes/articles'),
       productsRoute  = require('./routes/products'),
       loginRoute     = require('./routes/login'),
-      analytics      = require('./middleware/analytics'),
       methodOverride = require('method-override'),
       authentication = require('./middleware/authentication'),
+      analytics = require('./middleware/analytics'),
       pass = require('./db/pass.js')
       ;
 

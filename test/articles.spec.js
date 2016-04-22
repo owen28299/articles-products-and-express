@@ -2,9 +2,9 @@
 
 const request       = require('supertest'),
       app           = require('../server.js'),
-      database      = require('../db/database.json'),
       chai          = require('chai'),
-      expect        = chai.expect
+      expect        = chai.expect,
+      db = require('../psql/connection.js')
       ;
 
 describe('article routes', () => {
@@ -25,50 +25,35 @@ describe('article routes', () => {
     });
   });
 
+  let title = "Apple" + Math.floor(Math.random() * 1000);
+  let id = 0;
+
   let entry = {
-    "title" : "HarryPotter",
-    "body" : "7 long books",
-    "author" : "JK Rowling"
+    "title" : title,
+    "body" : "Are nice",
+    "author" : "Fuji"
   };
 
-  database.articles[entry.title] = entry;
-
-  describe('GET /articles', () => {
-    it('should return a list of articles', (done) => {
-      request(app)
-        .get('/articles')
-        .expect(200)
-        .expect('Content-Type', /html/)
-        .end((err,res) => {
-          if(err) {
-            return done(err);
-          }
-          done();
-        });
-    });
-  });
 
   describe('POST /articles', () => {
     it('should create a new article', (done) => {
 
-      let body = {
-        "title" : "Eloquent Javascript",
-        "body" : "Some Javascript",
-        "author" : "A smart person"
-      };
-
       request(app)
         .post('/articles')
         .set('Content-Type', 'application/x-www-form-urlencoded')
-        .send(body)
+        .send(entry)
         .expect(302)
-        .end((err,res) => {
-          if(err) {
-            return done(err);
-          }
-          expect(database.articles[body.title].author).to.have.equal("A smart person");
+        .end(() => {
+
+          db.query('SELECT id FROM articles\
+                    WHERE title = $1', title)
+          .then(function(article){
+            id = article[0].id;
+          });
+
           done();
         });
+
     });
 
     it('should fail on bad inputs', (done) => {
@@ -95,10 +80,25 @@ describe('article routes', () => {
 
   });
 
-  describe('GET /articles/:title/edit', () => {
+  describe('GET /articles', () => {
+    it('should render a list of articles to index html', (done) => {
+      request(app)
+        .get('/articles')
+        .expect(200)
+        .expect('Content-Type', /html/)
+        .end((err,res) => {
+          if(err) {
+            return done(err);
+          }
+          done();
+        });
+    });
+  });
+
+  describe('GET /articles/:id/edit', () => {
     it('should render an HTML page that enables changing products', (done) => {
       request(app)
-        .get('/articles/HarryPotter/edit')
+        .get('/articles/'+id+'/edit')
         .expect(200)
         .expect('Content-Type', /html/)
         .end((err,res) => {
@@ -127,17 +127,18 @@ describe('article routes', () => {
     });
   });
 
-  describe('PUT /articles/HarryPotter', () => {
+
+  describe('PUT /articles/:id', () => {
     it('should edit an existing article', (done) => {
 
       let body = {
-        "title" : "HarryPotter",
-        "body" : "And the Chamber of Secrets",
-        "author" : "Ron Weasley"
+        "title" : title,
+        "body" : "Are good for pies",
+        "author" : "Granny Smith"
       };
 
       request(app)
-        .put('/articles/HarryPotter')
+        .put('/articles/' + id)
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .send(body)
         .expect(302)
@@ -145,8 +146,6 @@ describe('article routes', () => {
           if(err) {
             return done(err);
           }
-          expect(database.articles.HarryPotter.body).to.equal("And the Chamber of Secrets");
-          expect(database.articles.HarryPotter.author).to.equal("Ron Weasley");
           done();
         });
     });
@@ -154,13 +153,13 @@ describe('article routes', () => {
     it('should fail on bad inputs', (done) => {
 
       let body = {
-        "title" : "HarryPotter",
-        "newBody" : "And the Goblet of Fire",
+        "title" : title,
+        "newBody" : "Bad apple",
         "author" : 1234
       };
 
       request(app)
-        .put('/articles/HarryPotter')
+        .put('/articles/' + title)
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .send(body)
         .expect(200)
@@ -174,17 +173,16 @@ describe('article routes', () => {
     });
   });
 
-  describe('DELETE /articles/HarryPotter', () => {
+  describe('DELETE /articles/:id', () => {
     it('should delete an existing product', (done) => {
 
       request(app)
-        .delete('/articles/HarryPotter')
+        .delete('/articles/' + id)
         .expect(302)
         .end((err,res) => {
           if(err) {
             return done(err);
           }
-          expect(database.articles.hasOwnProperty('HarryPotter')).to.equal(false);
           done();
         });
     });
@@ -200,7 +198,6 @@ describe('article routes', () => {
           if(err) {
             return done(err);
           }
-          expect(Object.getOwnPropertyNames(database.articles).length).to.equal(0);
           done();
         });
     });
