@@ -7,9 +7,12 @@ const express        = require('express'),
 
 router.route('/')
   .get((req, res) => {
-    res.render('index', {
-      products: productsModel.getAll()
+    productsModel.getAll(function(products){
+      res.render('index', {
+        products: products
+      });
     });
+
   })
   .post(validation({ "name": "string", "price": "number", "inventory": "number"}),
     (req, res) => {
@@ -30,8 +33,15 @@ router.route('/')
 router.route('/:id/edit')
   .get( (req,res) => {
     let id = req.params.id;
-    res.render('edit', {
-      product : productsModel.getProduct(id)
+    productsModel.getProduct(id, function(error, product){
+      if(error){
+        res.send("Failed to retrieve data");
+      }
+      else {
+        res.render('edit', {
+          product : product[0]
+        });
+      }
     });
   });
 

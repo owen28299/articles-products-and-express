@@ -7,16 +7,18 @@ const express = require('express'),
 
 router.route('/')
   .get ((req, res) => {
-    res.render('./articles/index', {
-      articles: articlesModel.getAll()
+    articlesModel.getAll(function(articles){
+      res.render('./articles/index', {
+        articles: articles
+      });
     });
+
   })
   .post(validation({ "title": "string", "body": "string", "author": "string"}), (req,res) => {
     let newArticle = ({
       'title': req.body.title,
       'body': req.body.body,
-      'author': req.body.author,
-      'urlTitle': encodeURI(req.body.title)
+      'author': req.body.author
     });
 
     articlesModel.addArticle(newArticle, (err) => {
@@ -33,12 +35,16 @@ router.route('/')
     });
   });
 
-router.route('/:title/edit')
+router.route('/:id/edit')
   .get( (req,res) => {
-    let title = req.params.title;
-    res.render('./articles/edit', {
-      article: articlesModel.getTitle(title)
+    let id = req.params.id;
+
+    articlesModel.getTitle(id, function(article){
+      res.render('./articles/edit', {
+        article: article[0]
+      });
     });
+
   });
 
 router.route('/new')
@@ -46,12 +52,12 @@ router.route('/new')
     res.render('./articles/new');
   });
 
-router.route('/:title')
+router.route('/:id')
   .put(validation({ "title": "string", "body": "string", "author": "string"}, true), (req, res) => {
-    let title = req.params.title;
+    let id = req.params.id;
     var changes = req.body;
 
-    articlesModel.changeArticle(title, changes, (err) => {
+    articlesModel.changeArticle(id, changes, (err) => {
       if(err){
         return res.json({
           success : false,
@@ -64,9 +70,9 @@ router.route('/:title')
     });
   })
   .delete((req,res) => {
-    let title = req.params.title;
+    let id = req.params.id;
 
-    articlesModel.deleteArticle(title, (err) => {
+    articlesModel.deleteArticle(id, (err) => {
       if(err){
         res.send({
           success : false,
@@ -87,7 +93,7 @@ router.route('/deleteAll')
         res.send('failed');
       }
       else{
-        res.redirect('/products');
+        res.redirect('/articles');
       }
     });
   });

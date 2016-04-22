@@ -1,99 +1,90 @@
 'use strict';
+/*jshint multistr: true */
 
-const fs       = require('fs'),
-      database = require('../db/database.json');
+const db = require('../psql/connection.js')
+      ;
 
 function productModelFunctions(){
 
   function addItem (newProduct, callback){
 
-    Object.defineProperty(newProduct,'id',{
-      value: database.products.products.length,
-      enumerable: true,
-      writable: false,
-      configurable: false
-    });
+    let name = (newProduct.name);
+    let price = (newProduct.price);
+    let inventory = (newProduct.inventory);
 
-    database.products.products.push(newProduct);
-    fs.writeFile('./db/database.json', JSON.stringify(database), (err) => {
-      if(err){
-        callback(err);
-      }
-      else{
-        callback(null);
-      }
+    db.query('INSERT INTO products\
+      (name, price, inventory)\
+      values ($1, $2, $3);',
+      [name, price, inventory])
+    .then(function(){
+      callback(null);
+    })
+    .catch(function(error){
+      callback(error);
     });
-
   }
 
-  let getAll = () => {
-     return database.products.products;
+  let getAll = (callback) => {
+    db.query('SELECT * FROM products')
+    .then(function(products){
+      callback(products);
+    })
+    .catch(function(err){
+      callback(err);
+    });
   };
 
   function resetProducts(callback){
-    database.products.products = [];
-    fs.writeFile('./db/database.json', JSON.stringify(database), (err) => {
-      if(err){
-        callback(err);
-      } else {
-          callback(null);
-        }
+    db.query('TRUNCATE TABLE products')
+    .then(function(){
+      callback(null);
+    })
+    .catch(function(error){
+      callback(error);
     });
   }
 
-  function getProduct(id){
-    return database.products.products[id];
+  function getProduct(id, callback){
+    db.query('SELECT * FROM products\
+     WHERE id = $1', id)
+    .then(function(product){
+      callback(null, product);
+    })
+    .catch(function(error){
+      callback(error);
+    });
   }
 
   function changeProduct(id,changes,callback){
 
-    if (database.products.products.length === 0) {
-      return callback('Bad Request: There are no products');
-    }
-    else {
-      let product = database.products.products[id];
-        for (let prop in changes) {
-          try {
-            if (product.hasOwnProperty(prop) && changes[prop]){
-              product[prop] = changes[prop];
-            }
-          }
-          catch(err){
-            return callback('Invalid Request: Field Cannot Be Changed');
-          }
-        }
-    fs.writeFile('./db/database.json', JSON.stringify(database), (err) => {
+    var name = changes.name;
+    var price = changes.price;
+    var inventory = changes.inventory;
 
-      if(err){
-        callback(err);
-      } else {
-        callback(null);
-      }
-
+    db.query('UPDATE products\
+              SET name = $1, price = $2, inventory = $3\
+              WHERE id = $4', [name, price, inventory, id])
+    .then(function(){
+      callback(null);
+    })
+    .catch(function(error){
+      callback(error);
     });
-    }
 
   }
 
   function deleteProduct(id, callback){
-    if (database.products.products.length === 0) {
-      return callback('Bad Request: There are no products');
-    }
-    else{
-      let product = database.products.products[id];
-      for (var prop in product){
-        let d = Object.getOwnPropertyDescriptor(product, prop);
-        if(d.writable === true && prop !== 'id'){
-          product[prop] = null;
-        }
-      }
-    }
-    fs.writeFile('./db/database.json', JSON.stringify(database), (err) => {
-      if(err){
-        callback(err);
-      }
-        callback(null);
+
+    db.query('DELETE FROM products\
+              WHERE id = $1',
+              id)
+    .then(function(){
+      callback(null);
+    })
+    .catch(function(error){
+      callback(error);
     });
+
   }
 
   return {

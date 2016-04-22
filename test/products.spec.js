@@ -1,11 +1,13 @@
 'use strict';
+/*jshint multistr: true */
 
 const request  = require('supertest'),
       app      = require('../server.js'),
-      database = require('../db/database.json'),
       chai     = require('chai'),
-      expect   = chai.expect
+      expect   = chai.expect,
+      db = require('../psql/connection.js')
       ;
+
 
 describe('product routes', () => {
   it('should allow Hello World to pass', (done) => {
@@ -16,6 +18,7 @@ describe('product routes', () => {
       "username" : "Hello",
       "password" : "World"
     })
+    .expect(302)
     .end((err,res) => {
       if(err) {
         return done(err);
@@ -24,52 +27,37 @@ describe('product routes', () => {
     });
   });
 
+  var id = 0;
+
+  let price = Math.floor(Math.random() * 100);
+  let inventory = Math.floor(Math.random() * 1000);
 
   let entry = {
     "name" : "apple",
-    "price" : 10,
-    "inventory" : 100
+    "price" : price,
+    "inventory" : inventory
   };
-
-  database.products.products.push(entry);
-  var originalLength = database.products.products.length;
-
-  describe('GET /products', () => {
-    it('should return a list of products', (done) => {
-      request(app)
-        .get('/products')
-        .expect(200)
-        .expect('Content-Type', /html/)
-        .end((err,res) => {
-          if(err) {
-            return done(err);
-          }
-          done();
-        });
-    });
-  });
 
   describe('POST /products', () => {
     it('should create a new product', (done) => {
 
-      let body = {
-        "name" : "pear",
-        "price" : 12,
-        "inventory" : 50
-      };
-
       request(app)
         .post('/products')
         .set('Content-Type', 'application/x-www-form-urlencoded')
-        .send(body)
+        .send(entry)
         .expect(302)
-        .end((err,res) => {
-          if(err) {
-            return done(err);
-          }
-          expect(database.products.products).to.have.length.above(originalLength);
+        .end(() => {
+
+          db.query('SELECT id FROM products\
+                    WHERE price = $1 AND inventory = $2',
+                    [price, inventory])
+          .then(function(product){
+            id = product[0].id;
+          });
+
           done();
         });
+
     });
 
     it('should fail on bad inputs', (done) => {
@@ -89,14 +77,28 @@ describe('product routes', () => {
           if(err) {
             return done(err);
           }
-          expect(res.body.success).to.equal(false);
-          expect(database.products.products).to.have.length.above(originalLength);
           done();
         });
 
     });
 
   });
+
+  describe('GET /products', () => {
+    it('should render a list of products to index html', (done) => {
+      request(app)
+        .get('/products')
+        .expect(200)
+        .expect('Content-Type', /html/)
+        .end((err,res) => {
+          if(err) {
+            return done(err);
+          }
+          done();
+        });
+    });
+  });
+
 
   describe('GET /products/:id/edit', () => {
     it('should render an HTML page that enables changing products', (done) => {
@@ -130,7 +132,7 @@ describe('product routes', () => {
     });
   });
 
-  describe('PUT /products/' + originalLength, () => {
+  describe('PUT /products/:id', () => {
     it('should edit an existing product', (done) => {
 
       let body = {
@@ -140,7 +142,7 @@ describe('product routes', () => {
       };
 
       request(app)
-        .put('/products/' + originalLength)
+        .put('/products/' + id)
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .send(body)
         .expect(302)
@@ -148,9 +150,6 @@ describe('product routes', () => {
           if(err) {
             return done(err);
           }
-          expect(database.products.products[originalLength].name).to.equal('banana');
-          expect(database.products.products[originalLength].price).to.equal('15');
-          expect(database.products.products[originalLength].inventory).to.equal('75');
           done();
         });
     });
@@ -164,7 +163,7 @@ describe('product routes', () => {
       };
 
       request(app)
-        .put('/products/' + originalLength)
+        .put('/products/' + id)
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .send(body)
         .expect(200)
@@ -178,19 +177,16 @@ describe('product routes', () => {
     });
   });
 
-  describe('DELETE /products/' + originalLength, () => {
+  describe('DELETE /products/:id', () => {
     it('should delete an existing product', (done) => {
 
       request(app)
-        .delete('/products/' + originalLength)
+        .delete('/products/' + id)
         .expect(302)
         .end((err,res) => {
           if(err) {
             return done(err);
           }
-          expect(database.products.products[originalLength].name).to.equal(null);
-          expect(database.products.products[originalLength].price).to.equal(null);
-          expect(database.products.products[originalLength].inventory).to.equal(null);
           done();
         });
     });
@@ -206,7 +202,6 @@ describe('product routes', () => {
           if(err) {
             return done(err);
           }
-          expect(database.products.products.length).to.equal(0);
           done();
         });
     });

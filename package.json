@@ -19,17 +19,21 @@
   },
   "homepage": "https://github.com/owen28299/articles-products-and-express#readme",
   "dependencies": {
+    "body-parser": "^1.15.0",
     "consolidate": "^0.14.0",
     "cookie-parser": "^1.4.1",
     "express": "^4.13.4",
     "jade": "^1.11.0",
-    "method-override": "^2.3.5"
+    "method-override": "^2.3.5",
+    "pg-promise": "^3.9.0"
   },
   "devDependencies": {
     "browser-sync": "^2.12.3",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
-    "gulp-sass": "^2.2.0",
+    "gulp-connect": "^3.2.2",
+    "gulp-nodemon": "^2.0.6",
+    "gulp-sass": "^2.3.0",
     "mocha": "^2.4.5",
     "supertest": "^1.2.0"
   }

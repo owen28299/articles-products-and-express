@@ -1,14 +1,16 @@
 doctype html
-
-block title
-  title
-    |Login
-
-block content
-
-    form(method='POST' action='/login')
-      p Username:
-        input(name= 'username')
-      p Password:
-        input(type= 'password' name= 'password')
-      button Login
+head
+  block title
+    title
+      |Login
+  link(rel= "stylesheet", href= "./css/styles.css")
+body
+  block content
+    div(id= 'loginContainer')
+      div(id= 'formContainer')
+        form(method='POST' action='/login')
+          p Username:
+            input(name= 'username')
+          p  Password:
+            input(type= 'password' name= 'password')
+          button Login
