@@ -2,18 +2,15 @@ doctype html
 head
   block title
     title
-      |Login
+      |Sign Up
   link(rel= "stylesheet", href= "./css/styles.css")
 body
   block content
     div(id= 'loginContainer')
       div(id= 'formContainer')
-        form(method='POST' action='/login')
-          p Username:
+        form(method='POST' action='/signUp')
+          p Desired Username:
             input(name= 'username')
-          p  Password:
+          p  Desired  Password:
             input(type= 'password' name= 'password')
-          button Login
-
-        a(href ='/signUp')
           button Sign Up

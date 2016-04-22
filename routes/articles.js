@@ -1,7 +1,7 @@
 'use strict';
-const express = require('express'),
-      router = express.Router(),
-      validation = require('../middleware/validation'),
+const express       = require('express'),
+      router        = express.Router(),
+      validation    = require('../middleware/validation'),
       articlesModel = require('../models/articlesModel')
       ;
 
