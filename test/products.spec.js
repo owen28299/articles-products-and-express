@@ -3,9 +3,9 @@
 
 const request  = require('supertest'),
       app      = require('../server.js'),
-      database = require('../db/database.json'),
       chai     = require('chai'),
-      expect   = chai.expect
+      expect   = chai.expect,
+      db = require('../psql/connection.js')
       ;
 
 
@@ -27,19 +27,19 @@ describe('product routes', () => {
     });
   });
 
-  var originalLength = 0;
+  var id = 0;
+
+  let price = Math.floor(Math.random() * 100);
+  let inventory = Math.floor(Math.random() * 1000);
+
+  let entry = {
+    "name" : "apple",
+    "price" : price,
+    "inventory" : inventory
+  };
 
   describe('POST /products', () => {
     it('should create a new product', (done) => {
-
-      let price = Math.floor(Math.random() * 100);
-      let inventory = Math.floor(Math.random() * 1000);
-
-      let entry = {
-        "name" : "apple",
-        "price" : price,
-        "inventory" : inventory
-      };
 
       request(app)
         .post('/products')
@@ -47,6 +47,14 @@ describe('product routes', () => {
         .send(entry)
         .expect(302)
         .end(() => {
+
+          db.query('SELECT id FROM products\
+                    WHERE price = $1 AND inventory = $2',
+                    [price, inventory])
+          .then(function(product){
+            id = product[0].id;
+          });
+
           done();
         });
 
@@ -124,7 +132,7 @@ describe('product routes', () => {
     });
   });
 
-  describe('PUT /products/' + originalLength, () => {
+  describe('PUT /products/:id', () => {
     it('should edit an existing product', (done) => {
 
       let body = {
@@ -134,7 +142,7 @@ describe('product routes', () => {
       };
 
       request(app)
-        .put('/products/' + originalLength)
+        .put('/products/' + id)
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .send(body)
         .expect(302)
@@ -155,7 +163,7 @@ describe('product routes', () => {
       };
 
       request(app)
-        .put('/products/' + originalLength)
+        .put('/products/' + id)
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .send(body)
         .expect(200)
@@ -169,11 +177,11 @@ describe('product routes', () => {
     });
   });
 
-  describe('DELETE /products/' + originalLength, () => {
+  describe('DELETE /products/:id', () => {
     it('should delete an existing product', (done) => {
 
       request(app)
-        .delete('/products/' + originalLength)
+        .delete('/products/' + id)
         .expect(302)
         .end((err,res) => {
           if(err) {
