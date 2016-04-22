@@ -7,11 +7,16 @@ const express       = require('express'),
 
 router.route('/')
   .get ((req, res) => {
-    articlesModel.getAll(function(articles){
-      res.render('./articles/index', {
-        articles: articles
+    articlesModel.getAll()
+      .then(function(articles){
+        res.render('./articles/index', {
+          articles: articles
+        });
+      })
+      .catch(function(error){
+        res.send(error);
       });
-    });
+
 
   })
   .post(validation({ "title": "string", "body": "string", "author": "string"}), (req,res) => {
@@ -21,25 +26,26 @@ router.route('/')
       'author': req.body.author
     });
 
-    articlesModel.addArticle(newArticle, (err) => {
-      if(err){
-        res.json({
-          success: false,
-          reason: err
-        });
-      }
-      else{
-        res.redirect('/articles');
-      }
-
+    articlesModel.addArticle(newArticle)
+    .then(function(){
+      res.redirect('/articles');
+    })
+    .catch(function(error){
+      res.json({
+        success: false,
+        reason: error
+      });
     });
   });
+
+
 
 router.route('/:id/edit')
   .get( (req,res) => {
     let id = req.params.id;
 
-    articlesModel.getTitle(id, function(article){
+    articlesModel.getTitle(id)
+    .then(function(article){
       res.render('./articles/edit', {
         article: article[0]
       });
@@ -88,14 +94,14 @@ router.route('/:id')
 
 router.route('/deleteAll')
   .get( (req,res) => {
-    articlesModel.resetArticles((err) => {
-      if (err){
-        res.send('failed');
-      }
-      else{
-        res.redirect('/articles');
-      }
+    articlesModel.resetArticles()
+    .then(function(){
+      res.redirect('/articles');
+    })
+    .catch(function(error){
+      res.send(error);
     });
-  });
+
+    });
 
 module.exports = router;
