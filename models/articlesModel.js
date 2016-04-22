@@ -75,16 +75,18 @@ function articleModelFunctions(){
     });
   }
 
-  function deleteArticle(id, callback){
-    db.query('DELETE FROM articles\
-              WHERE id = $1',
-              id)
-    .then(function(){
-      callback(null);
-    })
-    .catch(function(error){
-      callback(error);
-    });  }
+  function deleteArticle(id){
+    return new Promise (function(resolve, reject){
+      db.query('DELETE FROM articles\
+                WHERE id = $1',
+                id)
+      .then(resolve)
+      .catch(function(error){
+        reject(error);
+      });
+    });
+
+  }
 
   return {
     resetArticles : resetArticles,

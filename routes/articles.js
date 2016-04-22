@@ -66,7 +66,6 @@ router.route('/:id')
     articlesModel.changeArticle(id, changes)
       .then(function(){
         res.redirect('/articles');
-
       })
       .catch(function(error){
         res.json({
@@ -77,19 +76,16 @@ router.route('/:id')
   })
   .delete((req,res) => {
     let id = req.params.id;
-
-    articlesModel.deleteArticle(id, (err) => {
-      if(err){
+    articlesModel.deleteArticle(id)
+      .then(function(){
+        res.redirect('/articles');
+      })
+      .catch(function(err){
         res.send({
           success : false,
           reason : err
         });
-      }
-      else{
-        res.redirect('/articles');
-      }
-    });
-
+      });
   });
 
 router.route('/deleteAll')
