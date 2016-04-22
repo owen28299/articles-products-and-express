@@ -15,7 +15,6 @@ function articleModelFunctions(){
     });
   }
 
-
   function resetArticles(){
     return new Promise(function(resolve, reject){
       db.query('TRUNCATE TABLE articles')
@@ -25,7 +24,6 @@ function articleModelFunctions(){
       });
     });
   }
-
 
   function addArticle(newArticle){
     return new Promise(function(resolve, reject){

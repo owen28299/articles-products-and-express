@@ -2,9 +2,10 @@
 /*jshint multistr: true */
 const express = require('express'),
       router = express.Router(),
-      pass = require('../db/pass.js'),
+      pass = require('../pass/pass.js'),
       crypto = require('crypto'),
-      db = require('../psql/connection.js');
+      userModel = require('../models/userModel')
+      ;
 
 router.route('/')
   .get((req, res) => {
@@ -17,22 +18,21 @@ router.route('/')
       return hash.update(password).digest('hex');
     }
 
-    db.query('SELECT * FROM users\
-              WHERE username = $1\
-              AND password = $2\
-              ',[req.body.username, encrypt(req.body.password)
-              ]).then(function(result) {
-                if (result.length > 0) {
-                  pass.access = true;
-                  res.redirect('/');
-                } else {
-                  res.redirect('/login');
-                }
-              });
-});
+    let username = req.body.username;
+    let password = encrypt(req.body.password);
 
+    userModel.getUser(username, password)
+      .then(function(user){
+        if(user.length > 0){
+          pass.access = true;
+          res.redirect('/');
+        }
+      })
+      .catch(function(error){
+        res.send(error);
+      });
 
-
+  });
 
 
 module.exports = router;

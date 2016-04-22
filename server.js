@@ -9,7 +9,7 @@ const express        = require('express'),
       methodOverride = require('method-override'),
       authentication = require('./middleware/authentication'),
       analytics      = require('./middleware/analytics'),
-      pass           = require('./db/pass.js')
+      pass           = require('./pass/pass.js')
       ;
 
 app.use(methodOverride('_method'));

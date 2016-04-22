@@ -2,41 +2,37 @@
 /*jshint multistr: true */
 const express    = require('express'),
       router     = express.Router(),
-      pass       = require('../db/pass.js'),
       crypto     = require('crypto'),
-      hash       = crypto.createHash('sha512'),
       validation = require('../middleware/validation'),
       userModel  = require('../models/userModel');
 
 
 router.route('/')
   .get ((req, res) => {
-    userModel.getUser(function(users){
-      res.render('./signUp');
-    });
+    res.render('./signUp');
   })
-
   .post(validation({ "username": "string", "password": "string"}), (req,res) => {
 
-  let encryptedPassword = hash.update(req.body.password).digest('hex');
+    function encrypt(password){
+      var hash = crypto.createHash('sha512');
+      return hash.update(password).digest('hex');
+    }
 
     let newUser = ({
       'username': req.body.username,
-      'password': encryptedPassword
+      'password': encrypt(req.body.password)
     });
 
-    userModel.addUser(newUser, (err) => {
-      if(err){
+    userModel.addUser(newUser)
+      .then(function(){
+        res.redirect('/login');
+      })
+      .catch(function(err){
         res.json({
           success: false,
           reason: err
         });
-      }
-      else{
-        res.redirect('/login');
-      }
-
-    });
+      });
 });
 
 

@@ -5,35 +5,36 @@ const db = require('../psql/connection.js');
 
 function UserModelFunctions(){
 
-  function getUser(callback){
-    db.query('SELECT * FROM users \
-              WHERE username\
-              AND password')
-    .then(function(articles){
-      callback(articles);
-    })
-    .catch(function(error){
-      callback(error);
-    });
-  }
-
-  function addUser(newUser, callback){
-
-    db.query('INSERT INTO Users (\
-              username, password)\
-              VALUES ($1, $2);',
-              [
-              newUser.username,
-              newUser.password
-              ])
-    .then(function(){
-      callback(null);
-    })
-    .catch(function(error){
-      callback(error);
+  function getUser(username, password){
+    return new Promise (function(resolve, reject){
+      db.query('SELECT * FROM users \
+                WHERE username = $1\
+                AND password = $2', [username, password])
+      .then(resolve)
+      .catch(function(error){
+        reject(error);
+      });
     });
 
   }
+
+  function addUser(newUser){
+    return new Promise (function(resolve,reject){
+      db.query('INSERT INTO Users (\
+                username, password)\
+                VALUES ($1, $2);',
+                [
+                newUser.username,
+                newUser.password
+                ])
+      .then(resolve)
+      .catch(function(error){
+        reject(error);
+      });
+    });
+
+  }
+
   return {
     getUser: getUser,
     addUser: addUser
