@@ -132,9 +132,8 @@ margin-top: -10%;
 
 
 #loginContainer {
-  color: white;
   background-color: black;
-  opacity: 0.5;
+  opacity: 0.9;
   width: 70%;
   margin-left: 16%;
   margin-top: 2%;
@@ -142,5 +141,12 @@ margin-top: -10%;
 }
 
 #formContainer {
+  color: white;
   margin-left: 40%;
+  padding: 3%;
+
+  input {
+    padding: 1%;
+    align: right;
+  }
 }

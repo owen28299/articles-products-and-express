@@ -146,13 +146,17 @@ html {
   -webkit-transition: opacity 1s ease-in-out; }
 
 #loginContainer {
-  color: white;
   background-color: black;
-  opacity: 0.5;
+  opacity: 0.9;
   width: 70%;
   margin-left: 16%;
   margin-top: 2%;
   border-radius: 15px; }
 
 #formContainer {
-  margin-left: 40%; }
+  color: white;
+  margin-left: 40%;
+  padding: 3%; }
+  #formContainer input {
+    padding: 1%;
+    align: right; }
