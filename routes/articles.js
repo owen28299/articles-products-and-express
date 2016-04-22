@@ -26,25 +26,26 @@ router.route('/')
       'author': req.body.author
     });
 
-    articlesModel.addArticle(newArticle, (err) => {
-      if(err){
-        res.json({
-          success: false,
-          reason: err
-        });
-      }
-      else{
-        res.redirect('/articles');
-      }
-
+    articlesModel.addArticle(newArticle)
+    .then(function(){
+      res.redirect('/articles');
+    })
+    .catch(function(error){
+      res.json({
+        success: false,
+        reason: error
+      });
     });
   });
+
+
 
 router.route('/:id/edit')
   .get( (req,res) => {
     let id = req.params.id;
 
-    articlesModel.getTitle(id, function(article){
+    articlesModel.getTitle(id)
+    .then(function(article){
       res.render('./articles/edit', {
         article: article[0]
       });

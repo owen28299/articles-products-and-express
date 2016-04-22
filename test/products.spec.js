@@ -18,7 +18,6 @@ describe('product routes', () => {
       "username" : "Hello",
       "password" : "World"
     })
-    .expect(302)
     .end((err,res) => {
       if(err) {
         return done(err);
