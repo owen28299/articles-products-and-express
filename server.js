@@ -5,10 +5,11 @@ const express        = require('express'),
       articlesRoute  = require('./routes/articles'),
       productsRoute  = require('./routes/products'),
       loginRoute     = require('./routes/login'),
+      signUpRoute    = require('./routes/signUp'),
       methodOverride = require('method-override'),
       authentication = require('./middleware/authentication'),
-      analytics = require('./middleware/analytics'),
-      pass = require('./db/pass.js')
+      analytics      = require('./middleware/analytics'),
+      pass           = require('./db/pass.js')
       ;
 
 app.use(methodOverride('_method'));
@@ -24,6 +25,7 @@ app.use(bodyParser.urlencoded({
 app.use(analytics)
   .use(express.static('public'))
   .use('/login', loginRoute)
+  .use('/signUp', signUpRoute)
   .use('/articles', authentication(pass), articlesRoute)
   .use('/products', authentication(pass), productsRoute)
   ;
