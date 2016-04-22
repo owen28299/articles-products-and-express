@@ -57,21 +57,21 @@ function articleModelFunctions(){
 
   }
 
-  function changeArticle(id, changes, callback){
-    db.query('UPDATE articles\
-              SET title = $1, body = $2, author = $3\
-              WHERE id = $4',
-              [
-              changes.title,
-              changes.body,
-              changes.author,
-              id
-              ])
-    .then(function(){
-      callback(null);
-    })
-    .catch(function(error){
-      callback(error);
+  function changeArticle(id, changes){
+    return new Promise (function(resolve, reject){
+      db.query('UPDATE articles\
+                SET title = $1, body = $2, author = $3\
+                WHERE id = $4',
+                [
+                changes.title,
+                changes.body,
+                changes.author,
+                id
+                ])
+      .then(resolve)
+      .catch(function(error){
+        reject(error);
+      });
     });
   }
 

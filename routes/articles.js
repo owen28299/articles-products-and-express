@@ -63,17 +63,17 @@ router.route('/:id')
     let id = req.params.id;
     var changes = req.body;
 
-    articlesModel.changeArticle(id, changes, (err) => {
-      if(err){
-        return res.json({
-          success : false,
-          reason : err
-        });
-      }
-      else{
+    articlesModel.changeArticle(id, changes)
+      .then(function(){
         res.redirect('/articles');
-      }
-    });
+
+      })
+      .catch(function(error){
+        res.json({
+          success : false,
+          reason : error
+        });
+      });
   })
   .delete((req,res) => {
     let id = req.params.id;
