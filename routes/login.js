@@ -4,7 +4,6 @@ const express = require('express'),
       router = express.Router(),
       pass = require('../db/pass.js'),
       crypto = require('crypto'),
-      hash = crypto.createHash('sha512'),
       db = require('../psql/connection.js');
 
 router.route('/')
@@ -12,11 +11,16 @@ router.route('/')
     res.render('login');
   })
   .post((req, res) => {
-    let encryptedPassword = hash.update(req.body.password).digest('hex');
+
+    function encrypt(password){
+      var hash = crypto.createHash('sha512');
+      return hash.update(password).digest('hex');
+    }
+
     db.query('SELECT * FROM users\
               WHERE username = $1\
               AND password = $2\
-              ',[req.body.username, encryptedPassword
+              ',[req.body.username, encrypt(req.body.password)
               ]).then(function(result) {
                 if (result.length > 0) {
                   pass.access = true;

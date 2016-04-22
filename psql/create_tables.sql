@@ -1,12 +1,12 @@
-DROP DATABASE IF EXISTS articles_and_products;
-CREATE DATABASE articles_and_products;
+-- DROP DATABASE IF EXISTS articles_and_products;
+-- CREATE DATABASE articles_and_products;
 
-\c articles_and_products;
+-- \c articles_and_products;
 
--- DROP DATABASE IF EXISTS articles_and_products_test;
--- CREATE DATABASE articles_and_products_test;
+DROP DATABASE IF EXISTS articles_and_products_test;
+CREATE DATABASE articles_and_products_test;
 
--- \c articles_and_products_test;
+\c articles_and_products_test;
 
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS articles;
